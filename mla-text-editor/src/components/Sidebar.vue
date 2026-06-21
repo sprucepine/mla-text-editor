@@ -1,26 +1,30 @@
+
+<script setup lang="ts">
+const blocks = [
+  { name: 'Paragraph Block', icon: '🧱' },
+  { name: 'Image Block', icon: '🧱' },
+  { name: 'Heading Block', icon: '🧱' },
+  { name: 'Table Block', icon: '🧱' },
+  { name: 'Code Block', icon: '🧱' },
+]
+</script>
+
 <template>
-    <div class="drawer-side h-full z-10">
-      <label for="my-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
-      
-      <ul class="menu p-4 w-80 h-full bg-base-100 text-base-content border-r border-base-300 overflow-y-auto flex-nowrap">
-        <li class="mb-4 text-xl font-bold px-4 py-2 text-primary">
-          Add Blocks 
+  <div class="drawer-side h-full z-10">
+    <label for="my-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
+
+    <aside class="flex h-full w-80 flex-col border-l border-base-300 bg-base-100 text-base-content">
+      <div class="border-b border-base-300 p-4">
+        <h2 class="text-lg font-semibold text-primary">Add Blocks</h2>
+      </div>
+
+      <ul class="menu flex-1 gap-1 overflow-y-auto p-4">
+        <li v-for="block in blocks" :key="block.name">
+          <a class="rounded-xl">
+            {{ block.icon }} {{ block.name }}
+          </a>
         </li>
-        
-        <li><a class="active">🏠 Home</a></li>
-        <li><a>📊 Analytics</a></li>
-        <li><a>📬 Messages <span class="badge badge-sm badge-secondary">+3</span></a></li>
-        <li><a>⚙️ Settings</a></li>
-        
-        <div class="divider"></div>
-        
-        <li><a>🧱 Paragraph Block</a></li>
-        <li><a>🧱 Image Block</a></li>
-        <li><a>🧱 Heading Block</a></li>
-        <li><a>🧱 Table Block</a></li>
-        <li><a>🧱 Code Block</a></li>
-        
-        <li class="mt-auto"><a>👤 Profile</a></li>
       </ul>
-    </div>
+    </aside>
+  </div>
 </template>

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { DocumentItem, CreateDocumentInput } from '@' // if separated
+import type { DocumentItem } from '@/types/types' // if separated
 
 export const useDocumentStore = defineStore('document', () => {
   
@@ -9,17 +9,17 @@ export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
 
   // The function signature is now perfectly clean
-  function createDocument(input: CreateDocumentInput) {
+  function createDocument(input: DocumentItem) {
     const id = crypto.randomUUID()
     
     // Provide defaults right here during assignment if they weren't passed in
     documents.value[id] = {
-      id,
+      id, 
       content: input.content,
       title: "Untitled Document",
       name: "",
       professor: "",
-      class: ""
+      course: ""
     }
   }
 

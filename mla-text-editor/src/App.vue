@@ -4,8 +4,11 @@
 </script>
 
 <template>
-  <Navbar />
-  <Main />
+  <div class="flex h-screen flex-col bg-base-200 text-base-content">
+    <Navbar />
+    <Main />
+    
+  </div>
 </template>
 
   <!-- <main class="flex min-h-screen items-center justify-center p-6">

@@ -2,6 +2,17 @@
 @plugin "daisyui";
 
 @layer base {
+	html,
+	body,
+	#app {
+		height: 100%;
+		margin: 0;
+	}
+
+	body {
+		overflow: hidden;
+	}
+
 	:root {
 		color-scheme: light;
 	}

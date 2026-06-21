@@ -14,7 +14,7 @@ export interface DocumentItem {
   title: string;
   name: string;
   professor: string;
-  class: string;
+  course: string;
   content: ContentBlock[]; 
 }
 
