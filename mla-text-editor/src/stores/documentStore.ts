@@ -19,6 +19,7 @@ export const useDocumentStore = defineStore('document', () => {
       title: "Untitled Document",
       name: "",
       professor: "",
+      dueDate: "",
       course: ""
     }
   }

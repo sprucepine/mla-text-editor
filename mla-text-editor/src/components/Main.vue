@@ -11,6 +11,7 @@ const title = ref('');
 const name = ref('');
 const professor = ref('');
 const course = ref('');
+const dueDate = ref('');
 </script>
 
 <template>
@@ -35,21 +36,16 @@ const course = ref('');
                             Use the sidebar to add blocks and keep the main editor in one scroll area.
                         </p>
                     </div>
-                        <Card title="Draft" badge="Ready">
-                            Your writing area can go here.
+                        <Card title="Heading Information">
+                            <p class="pb-4">The heading in MLA format is displayed on the first page of your paper. It includes your name, your professor's name, the course name, and the date. Please fill in the information below to generate the heading. </p>   
+                            <input v-model="title" type="text" placeholder="Document Title" class="input input-bordered w-full mb-2" />
+                            <input v-model="name" type="text" placeholder="Your Name" class="input input-bordered w-full mb-2" />
+                            <input v-model="professor" type="text" placeholder="Professor's Name" class="input input-bordered w-full mb-2" />
+                            <input v-model="course" type="text" placeholder="Course Name" class="input input-bordered w-full mb-2" />
+                            <input v-model="dueDate" type="date" placeholder="Due Date" class="input input-bordered w-full mb-2" />
+                           
                         </Card>
                     
-
-
-                    <div class="rounded-2xl border border-base-300 bg-base-100 p-6 shadow-sm">
-                        <div class="mb-4 flex items-center justify-between">
-                            <h2 class="text-lg font-semibold">Draft</h2>
-                            <span class="badge badge-outline">Ready</span>
-                        </div>
-                        <div class="min-h-80 rounded-xl border border-base-300 bg-base-200 p-4 text-base-content/50">
-                            Your writing area can go here.
-                        </div>
-                    </div>
                 </section>
             </main>
         </div>
