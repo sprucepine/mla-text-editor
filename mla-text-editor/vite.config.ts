@@ -9,7 +9,15 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          // This tells Vue to treat <iconify-icon> as a native web component
+          // instead of looking for a registered Vue component.
+          isCustomElement: (tag) => tag === 'iconify-icon'
+        }
+      }
+    }),
     vueDevTools(),
   ],
   resolve: {
