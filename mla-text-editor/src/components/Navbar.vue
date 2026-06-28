@@ -6,9 +6,9 @@
       <div class="text-lg font-semibold">MLA Text Editor</div>
     </div>
 
-    <div class="navbar-end">
+    <!-- <div class="navbar-end">
       <input type="text" placeholder="Search" class="input input-bordered w-56" />
-    </div>
+    </div> -->
   </header>
 </template>
 <style scoped>
