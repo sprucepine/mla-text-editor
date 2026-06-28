@@ -11,10 +11,10 @@ import BlockTemplate from "@/components/BlockTemplate.vue";
 </script>
 
 <template>
-  <div class="drawer-side h-full min-h-0 z-10">
+  <div class="drawer-side h-full min-h-0 z-10 overflow-hidden">
     <label for="my-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
 
-    <aside class="flex h-dvh min-h-0 w-80 flex-col overflow-y-auto overflow-x-hidden border-l border-base-300 bg-base-100 text-base-content">
+    <aside class="flex h-full min-h-0 w-80 flex-col overflow-y-auto overflow-x-hidden border-l border-base-300 bg-base-100 text-base-content">
       <div class="border-b border-base-300 p-4">
         <h2 class="text-lg font-semibold">Add Blocks</h2>
       </div>
