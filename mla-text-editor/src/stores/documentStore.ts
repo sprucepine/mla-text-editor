@@ -17,6 +17,8 @@ export const useDocumentStore = defineStore('document', () => {
     const id = crypto.randomUUID()
     documents.value[id] = {
       id,
+      fileTitle: "",
+      headerName: "",
       title: "",
       name: "",
       professor: "",

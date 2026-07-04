@@ -11,6 +11,8 @@ export interface ContentBlock {
 
 export interface DocumentItem {
   id: string;
+  fileTitle: string;
+  headerName: string;
   title: string;
   name: string;
   professor: string;
