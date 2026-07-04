@@ -26,7 +26,13 @@ onMounted(() => {
                     </div>
 
                     <template v-if="documentStore.activeDocument">
-
+                        <Card v-if="documentStore.activeDocument" title="Header Information">
+                            <p class="pb-4">The header in MLA format is displayed at the top right of your paper. It should include your last name and an auto-generated page number.</p>
+                            <label class="floating-label">
+                                <span class="label-text">Header Name</span>
+                                <input v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="input input-bordered w-full mb-4" />
+                            </label>   
+                        </Card>
 
                         <Card v-if="documentStore.activeDocument" title="Heading Information">
                             <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>   
