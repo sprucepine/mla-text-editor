@@ -9,6 +9,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [
     tailwindcss(),
+  
     vue({
       template: {
         compilerOptions: {
@@ -20,6 +21,10 @@ export default defineConfig({
     }),
     vueDevTools(),
   ],
+  server: {
+    host: '0.0.0.0', // 👈 Exposes the server to the Codespaces proxy
+    port: 5173
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
