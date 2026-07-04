@@ -1,8 +1,8 @@
 <template>
     <div class="rounded-2xl border border-base-300 bg-base-100 p-6 shadow-sm">
-        <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-semibold">{{ title }}</h2>
-            <span v-if="badge" class="badge badge-outline">{{ badge }}</span>
+        <div class="flex items-center gap-2">
+          <iconify-icon v-if="icon" :icon="icon" class="text-xl" />
+          <h2 class="text-lg font-semibold text-base-content">{{ title }}</h2>
         </div>
         <div>
             <slot />
@@ -16,7 +16,7 @@ defineProps({
     type: String,
     required: true
   },
-  badge: {
+  icon: {
     type: String,
     required: false
   }
