@@ -22,20 +22,21 @@ onMounted(() => {
             <main class="flex-1 overflow-y-auto p-6">
                 <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
                     <div>
-                        <h1 class="text-3xl font-semibold tracking-tight">Start writing</h1>
+                      <h1 class="text-3xl font-semibold tracking-tight">
+                        {{ documentStore.activeDocument?.fileTitle || "Untitled Document" }}
+                      </h1>
                     </div>
-
                     <template v-if="documentStore.activeDocument">
                         <Card v-if="documentStore.activeDocument" title="Header Information">
                             <p class="pb-4">The header in MLA format is displayed at the top right of your paper. It should include your last name and an auto-generated page number.</p>
                             <label class="floating-label">
                                 <span class="label-text">Header Name</span>
                                 <input v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="input input-bordered w-full mb-4" />
-                            </label>   
+                            </label>
                         </Card>
 
                         <Card v-if="documentStore.activeDocument" title="Heading Information">
-                            <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>   
+                            <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>
                             <label class="floating-label">
                                 <span class="label-text">Document Title</span>
                                 <input v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="input input-bordered w-full mb-4" />
@@ -61,7 +62,7 @@ onMounted(() => {
                             <textarea v-model="block.text" class="textarea textarea-bordered w-full" placeholder="  Type your content here..."></textarea>
                         </Card>
                     </template>
-                    
+
                 </section>
             </main>
         </div>
