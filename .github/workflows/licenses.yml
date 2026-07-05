@@ -1,0 +1,35 @@
+name: Generate Dependency Licenses
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install Production Dependencies
+        run: npm ci --omit=dev
+
+      - name: Generate Licenses File
+        run: npx license-checker-rseidelsohn --production --markdown > THIRD_PARTY_LICENSES.md
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: update third-party dependency licenses"
+          title: "docs: update third-party dependency licenses"
+          body: "This automated PR updates the `THIRD_PARTY_LICENSES.md` file with the latest production dependencies."
+          branch: "automation/update-licenses"
+          delete-branch: true
