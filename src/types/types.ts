@@ -12,13 +12,14 @@ export interface ContentBlock {
 export interface DocumentItem {
   id: string;
   fileTitle: string;
+  fileIcon: string;
   headerName: string;
   title: string;
   name: string;
   professor: string;
   course: string;
   dueDate: string;
-  content: ContentBlock[]; 
+  content: ContentBlock[];
 }
 
 export enum SaveState {
