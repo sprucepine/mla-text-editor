@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   text: {
     type: String,
@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <span class="inline-flex items-center gap-1.5 rounded-md bg-base-200 px-2 py-1 text-xs font-medium text-base-content ring-1 ring-inset ring-base-300">
+  <span class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-base-content">
     <iconify-icon v-if="icon" :icon="icon" class="text-sm" />
     <span>{{ text }}</span>
   </span>

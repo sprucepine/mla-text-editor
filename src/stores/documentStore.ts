@@ -18,6 +18,7 @@ export const useDocumentStore = defineStore('document', () => {
     documents.value[id] = {
       id,
       fileTitle: "",
+      fileIcon: "",
       headerName: "",
       title: "",
       name: "",
@@ -68,9 +69,9 @@ export const useDocumentStore = defineStore('document', () => {
     () => activeDocument.value,
     (newDoc) => {
       if (!newDoc) return
-      
+
       saveState.value = SaveState.Saving
-      
+
       // Fake a slight delay so the user actually sees a "Saving..." feedback cycle
       setTimeout(() => {
         saveState.value = SaveState.Saved
@@ -79,13 +80,13 @@ export const useDocumentStore = defineStore('document', () => {
     { deep: true }
   )
 
-  return { 
-    documents, 
-    activeDocumentId, 
-    activeDocument, 
-    saveState, 
-    createNewDocument, 
-    addContentBlock 
+  return {
+    documents,
+    activeDocumentId,
+    activeDocument,
+    saveState,
+    createNewDocument,
+    addContentBlock
   }
 },
 {
