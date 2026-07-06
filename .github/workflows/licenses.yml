@@ -3,8 +3,9 @@ name: Generate Dependency Licenses
 on:
   push:
     branches:
+      - dev
       - main
-
+      
 jobs:
   licenses:
     runs-on: ubuntu-latest
