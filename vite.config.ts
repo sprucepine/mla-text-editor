@@ -7,9 +7,10 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/mla-text-editor/', // This fixes the blank page on GitHub Pages!
   plugins: [
     tailwindcss(),
-  
+
     vue({
       template: {
         compilerOptions: {
@@ -22,7 +23,7 @@ export default defineConfig({
     vueDevTools(),
   ],
   server: {
-    host: '0.0.0.0', // 👈 Exposes the server to the Codespaces proxy
+    host: '0.0.0.0', // Exposes the server to the Codespaces proxy
     port: 5173
   },
   resolve: {
