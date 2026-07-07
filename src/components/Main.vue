@@ -60,6 +60,7 @@ onMounted(() => {
                         </Card>
                         <Card v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
                             <textarea v-model="block.text" class="textarea textarea-bordered w-full" placeholder="  Type your content here..."></textarea>
+                            <button class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)">Remove Paragraph</button>
                         </Card>
                     </template>
 

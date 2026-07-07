@@ -86,7 +86,9 @@ export const useDocumentStore = defineStore('document', () => {
     activeDocument,
     saveState,
     createNewDocument,
-    addContentBlock
+    addContentBlock,
+    moveContentBlock,
+    deleteContentBlock
   }
 },
 {
