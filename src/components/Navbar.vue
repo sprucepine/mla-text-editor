@@ -36,6 +36,21 @@ function closeRenameModal() {
     <div class="navbar-start">
         <div class="text-lg font-semibold pr-4">MLA Text Editor</div>
         <Label v-if="documentStore.activeDocument" :text="documentStore.activeDocument.fileTitle || 'Untitled Document'" :icon="documentStore.activeDocument.fileIcon || 'mdi-file-document-outline'" />
+        <!-- Document Saving Information-->
+        <div v-if="documentStore.activeDocument" class="ml-4 text-sm text-muted-foreground">
+          <div v-if="documentStore.saveState === 'saved'">
+            <span>All changes saved</span>
+          </div>
+          <div v-else-if="documentStore.saveState === 'saving'">
+            <span>Saving...</span>
+          </div>
+          <div v-else-if="documentStore.saveState === 'error'">
+            <span class="text-error">Error saving changes</span>
+          </div>
+          <div v-else>
+            <span>Unsaved changes</span>
+          </div>
+        </div>
     </div>
 
     <div class="navbar-end">
