@@ -35,20 +35,22 @@ function closeRenameModal() {
   <header class="navbar w-full border-b border-base-300 bg-base-100 px-4 shadow-sm">
     <div class="navbar-start">
         <div class="text-lg font-semibold pr-4">MLA Text Editor</div>
-        <Label v-if="documentStore.activeDocument" :text="documentStore.activeDocument.fileTitle || 'Untitled Document'" :icon="documentStore.activeDocument.fileIcon || 'mdi-file-document-outline'" />
+        <button class="btn btn-sm btn-outline" :disabled="!documentStore.activeDocument" @click="openRenameModal">
+          <Label v-if="documentStore.activeDocument" :text="documentStore.activeDocument.fileTitle || 'Untitled Document'" :icon="documentStore.activeDocument.fileIcon || 'mdi-file-document-outline'" />
+        </button>
         <!-- Document Saving Information-->
         <div v-if="documentStore.activeDocument" class="ml-4 text-sm text-muted-foreground">
           <div v-if="documentStore.saveState === 'saved'">
-            <span>All changes saved</span>
+            <Label :text="'Saved'" :icon="'mdi-check-circle-outline'" />
           </div>
           <div v-else-if="documentStore.saveState === 'saving'">
-            <span>Saving...</span>
+            <Label :text="'Saving...'" :icon="'mdi-progress-clock'" />
           </div>
           <div v-else-if="documentStore.saveState === 'error'">
-            <span class="text-error">Error saving changes</span>
+            <Label :text="'Error saving changes'" :icon="'mdi-alert-circle-outline'" />
           </div>
           <div v-else>
-            <span>Unsaved changes</span>
+            <Label :text="'Unsaved changes'" :icon="'mdi-alert-outline'" />
           </div>
         </div>
     </div>
