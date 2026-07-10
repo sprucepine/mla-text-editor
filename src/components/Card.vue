@@ -3,6 +3,7 @@
         <div class="flex items-center gap-2">
           <iconify-icon v-if="icon" :icon="icon" class="text-xl" />
           <h2 class="text-lg font-semibold text-base-content">{{ title }}</h2>
+          <span v-if="badge" class="ml-2 rounded-full bg-primary px-2 py-1 text-xs font-semibold text-primary-content">{{ badge }}</span>
         </div>
         <div>
             <slot />
@@ -17,6 +18,10 @@ defineProps({
     required: true
   },
   icon: {
+    type: String,
+    required: false
+  },
+  badge: {
     type: String,
     required: false
   }
