@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import Navbar from '@/components/Navbar.vue'
   import Main from '@/components/Main.vue'
+  import 'tippy.js/dist/tippy.css'
 </script>
 
 <template>
   <div class="flex h-screen flex-col bg-base-200 text-base-content">
     <Navbar />
     <Main />
-    
+
   </div>
 </template>
 

@@ -1,3 +1,5 @@
+import type { JSONContent } from "@tiptap/vue-3";
+
 export enum DocumentType {
   body = "body",
   heading2 = "heading2",
@@ -7,6 +9,7 @@ export enum DocumentType {
 export interface ContentBlock {
   type: DocumentType;
   text: string;
+  content: JSONContent[]; // Recursive definition for nested content blocks
 }
 
 export interface DocumentItem {
@@ -29,3 +32,4 @@ export enum SaveState {
   OldSaved = 'oldSaved',
   Error = 'error',
 }
+

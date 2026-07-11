@@ -60,7 +60,8 @@ export const useDocumentStore = defineStore('document', () => {
     if (!activeDocument.value) return
     activeDocument.value.content.push({
       type,
-      text: ""
+      text: "",
+      content: []
     })
   }
 
