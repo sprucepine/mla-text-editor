@@ -60,10 +60,10 @@ onMounted(() => {
                         </Card>
                               <Card v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
                             <textarea v-model="block.text" class="textarea textarea-bordered w-full" placeholder="  Type your content here..."></textarea>
-                            <button class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)">Remove Paragraph</button>
+                            <button class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph"><iconify-icon icon="mdi-delete" /></button>
                             <!-- Move above -->
-                            <button v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)">Move Up</button>
-                            <button v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)">Move Down</button>
+                            <button v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up"><iconify-icon icon="mdi-arrow-up" /></button>
+                            <button v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></button>
                         </Card>
                     </template>
 
