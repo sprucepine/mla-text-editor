@@ -35,7 +35,7 @@ function closeRenameModal() {
   <header class="navbar w-full border-b border-base-300 bg-base-100 px-4 shadow-sm">
     <div class="navbar-start">
         <div class="text-lg font-semibold pr-4">MLA Text Editor</div>
-        <button v-if="documentStore.activeDocument" class="btn btn-sm btn-ghost" :disabled="!documentStore.activeDocument" @click="openRenameModal">
+        <button v-if="documentStore.activeDocument" class="btn btn-sm btn-ghost" :disabled="!documentStore.activeDocument" @click="openRenameModal" title="Rename Document">
           <Label :text="documentStore.activeDocument.fileTitle || 'Untitled Document'" :icon="documentStore.activeDocument.fileIcon || 'mdi-file-document-outline'" />
           <iconify-icon icon="mdi-pencil" />
         </button>
