@@ -1,9 +1,46 @@
 
 <script setup lang="ts">
+import GenerateInlineCitation from "@/components/GenerateInlineCitation.vue";
 import { useDocumentStore } from "@/stores/documentStore";
 import { DocumentType } from "@/types/types";
+import { computed, ref } from 'vue';
 
 const useDocumentStoreInstance = useDocumentStore();
+const inlineCitationModal = ref(false);
+const currentProjectLabel = computed(() => useDocumentStoreInstance.currentProjectLabel);
+
+function openInlineCitationModal() {
+  inlineCitationModal.value = true;
+}
+
+function closeInlineCitationModal() {
+  inlineCitationModal.value = false;
+}
+
+// function handleGenerateCitation() {
+//   if (!useDocumentStoreInstance.activeDocument) {
+//     useDocumentStoreInstance.createNewDocument();
+//   }
+
+//   const activeDocument = useDocumentStoreInstance.activeDocument;
+//   if (!activeDocument) return;
+
+//   activeDocument.citations.push({
+//     id: crypto.randomUUID(),
+//     name: currentProjectLabel,
+//     type: CitationType.Book
+//   });
+
+//   closeInlineCitationModal();
+// }
+
+function handleAddCitation() {
+  useDocumentStoreInstance.addCitation(currentProjectLabel.value);
+}
+
+function handleGenerateCitation() {
+  closeInlineCitationModal();
+}
 
 const blocks = [
   { name: 'Paragraph Block', badge: '', icon: 'boxicons:paragraph', description: 'A block for writing paragraphs of text.' },
@@ -12,6 +49,12 @@ const blocks = [
   // { name: 'Table Block', badge: '', icon: 'boxicons:table', description: 'A block for creating tables.' },
   // { name: 'Code Block', badge: '', icon: 'boxicons:code', description: 'A block for writing code.' },
 ]
+
+const tools = [
+  { name: 'Generate Inline Citation', badge: '', icon: 'f7:quote-bubble', description: 'Generate citations for your content.' },
+
+]
+
 import BlockTemplate from "@/components/BlockTemplate.vue";
 
 const handleBlockClick = (blockName: string) => {
@@ -37,6 +80,14 @@ const handleBlockClick = (blockName: string) => {
     //   break;
   }
 };
+const handleToolClick = (toolName: string) => {
+  switch (toolName) {
+    case 'Generate Inline Citation':
+      openInlineCitationModal();
+      break;
+  }
+};
+
 </script>
 
 <template>
@@ -45,7 +96,7 @@ const handleBlockClick = (blockName: string) => {
 
     <aside class="flex h-full min-h-0 w-80 flex-col overflow-y-auto overflow-x-hidden border-l border-base-300 bg-base-100 text-base-content">
       <div class="border-b border-base-300 p-4">
-        <h2 class="text-lg font-semibold">Add Blocks</h2>
+        <h2 class="text-lg font-semibold">Blocks</h2>
       </div>
       <ul class="menu w-full gap-1 p-4">
         <li v-for="block in blocks" :key="block.name" class="w-full">
@@ -56,6 +107,25 @@ const handleBlockClick = (blockName: string) => {
           </a>
         </li>
       </ul>
+      <div class="border-b border-base-300 p-4">
+        <h2 class="text-lg font-semibold">Tools</h2>
+      </div>
+      <ul class="menu w-full gap-1 p-4">
+        <li v-for="tool in tools" :key="tool.name" class="w-full">
+          <a class="block w-full rounded-xl" @click="handleToolClick(tool.name)">
+            <BlockTemplate :title="tool.name" :badge="tool.badge" :icon="tool.icon">
+              <p class="text-sm text-base-content/70">{{ tool.description }}</p>
+            </BlockTemplate>
+          </a>
+        </li>
+      </ul>
     </aside>
   </div>
+  <GenerateInlineCitation
+    v-if="inlineCitationModal"
+    :project-label="currentProjectLabel"
+    @close="closeInlineCitationModal"
+    @generate="handleGenerateCitation"
+    @add-citation="handleAddCitation"
+  />
 </template>

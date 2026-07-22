@@ -13,19 +13,6 @@ import type { SuggestionProps } from '@tiptap/suggestion'
 import tippy from 'tippy.js'
 import type { Instance } from 'tippy.js'
 import type { ContentBlock } from '@/types/types'
-import MenuList from './MenuList.vue'
-import CitationMenu from './CitationMenu.vue'
-
-// Contract for what MenuList exposes via defineExpose
-interface MenuListInstance {
-  onKeyDown: (props: { event: KeyboardEvent }) => boolean
-}
-
-// Menu item structure matching MenuList
-interface MenuItem {
-  label: string;
-  id: string;
-}
 
 const props = defineProps<{
   modelValue: ContentBlock
@@ -34,57 +21,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:modelValue', value: ContentBlock): void
 }>()
-
-let citationComponent: (VueRenderer & { ref: unknown }) | null = null
-let citationPopup: Instance | null = null
-
-function destroyCitationMenu() {
-  citationPopup?.destroy()
-  citationPopup = null
-  citationComponent?.destroy()
-  citationComponent = null
-}
-
-function openCitationMenuAtElement(anchor: Element) {
-  destroyCitationMenu()
-
-  const currentEditor = editor.value
-  if (!currentEditor) return
-
-  citationComponent = new VueRenderer(CitationMenu, {
-    editor: currentEditor,
-  }) as VueRenderer & { ref: unknown }
-
-  const menuElement = citationComponent.element
-  if (!menuElement) return
-
-  citationPopup = tippy(anchor, {
-    content: menuElement,
-    appendTo: () => document.body,
-    showOnCreate: true,
-    interactive: true,
-    trigger: 'manual',
-    placement: 'bottom-start',
-    theme: 'citation-menu',
-    zIndex: 9999,
-    hideOnClick: true,
-  })
-}
-
-function openCitationMenuFromSelection() {
-  const currentEditor = editor.value
-  if (!currentEditor) return
-
-  const { $from } = currentEditor.state.selection
-  const node = $from.nodeBefore
-  if (!node) return
-
-  const nodePos = $from.pos - node.nodeSize
-  const dom = currentEditor.view.nodeDOM(nodePos)
-  if (dom instanceof Element) {
-    openCitationMenuAtElement(dom)
-  }
-}
 
 const editor = useEditor({
   content: {

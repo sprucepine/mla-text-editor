@@ -77,7 +77,7 @@ onMounted(() => {
                 </section>
             </main>
         </div>
-
+        <Sidebar />
         <Sidebar />
     </div>
 </template>

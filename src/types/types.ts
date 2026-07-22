@@ -12,6 +12,21 @@ export interface ContentBlock {
   content: JSONContent[]; // Recursive definition for nested content blocks
 }
 
+export interface Citation {
+  id: string;
+  name: string;
+  pageNumber?: string;
+  type: CitationType;
+}
+
+export enum CitationType {
+
+  Book = 'Book',
+  Article = 'Article',
+  Website = 'Website',
+  NoAuthor = 'NoAuthor'
+}
+
 export interface DocumentItem {
   id: string;
   fileTitle: string;
@@ -23,6 +38,7 @@ export interface DocumentItem {
   course: string;
   dueDate: string;
   content: ContentBlock[];
+  citations: Citation[];
 }
 
 export enum SaveState {
