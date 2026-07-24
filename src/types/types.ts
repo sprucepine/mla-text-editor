@@ -15,16 +15,22 @@ export interface ContentBlock {
 export interface Citation {
   id: string;
   name: string;
+  author?: string;
+  title?: string;
+  year?: string;
+  publisher?: string;
+  containerTitle?: string;
   pageNumber?: string;
+  url?: string;
   type: CitationType;
 }
 
 export enum CitationType {
-
   Book = 'Book',
   Article = 'Article',
   Website = 'Website',
-  NoAuthor = 'NoAuthor'
+  Video = 'Video',
+  Other = 'Other'
 }
 
 export interface DocumentItem {

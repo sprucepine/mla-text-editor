@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CitationType, DocumentType, SaveState } from '@/types/types'
-import type { DocumentItem, ContentBlock, Citation } from '@/types/types'
+import type { DocumentItem, Citation } from '@/types/types'
 
 export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
