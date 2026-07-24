@@ -51,7 +51,7 @@ function saveDialog() {
 </script>
 
 <template>
-  <ModalView :title="props.initialTitle" :description="props.initialIcon">
+  <ModalView :title="props.initialTitle" :description="props.initialIcon" @close="closeDialog">
     <h3 class="text-lg font-semibold">Change file title</h3>
     <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
 
