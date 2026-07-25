@@ -17,27 +17,6 @@ function closeInlineCitationModal() {
   inlineCitationModal.value = false;
 }
 
-// function handleGenerateCitation() {
-//   if (!useDocumentStoreInstance.activeDocument) {
-//     useDocumentStoreInstance.createNewDocument();
-//   }
-
-//   const activeDocument = useDocumentStoreInstance.activeDocument;
-//   if (!activeDocument) return;
-
-//   activeDocument.citations.push({
-//     id: crypto.randomUUID(),
-//     name: currentProjectLabel,
-//     type: CitationType.Book
-//   });
-
-//   closeInlineCitationModal();
-// }
-
-function handleAddCitation() {
-  useDocumentStoreInstance.addCitation(currentProjectLabel.value);
-}
-
 function handleGenerateCitation() {
   closeInlineCitationModal();
 }
@@ -126,6 +105,5 @@ const handleToolClick = (toolName: string) => {
     :project-label="currentProjectLabel"
     @close="closeInlineCitationModal"
     @generate="handleGenerateCitation"
-    @add-citation="handleAddCitation"
   />
 </template>
