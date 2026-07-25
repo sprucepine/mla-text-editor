@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { DocumentType, SaveState } from '@/types/types'
-import type { DocumentItem, ContentBlock } from '@/types/types'
+import { CitationType, DocumentType, SaveState } from '@/types/types'
+import type { DocumentItem, Citation } from '@/types/types'
 
 export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
@@ -12,6 +12,15 @@ export const useDocumentStore = defineStore('document', () => {
     if (!activeDocumentId.value) return null
     return documents.value[activeDocumentId.value]
   })
+
+  const currentProjectLabel = computed(() => {
+    const activeDoc = activeDocument.value
+    const fallback = activeDoc?.fileTitle?.trim() || activeDoc?.title?.trim() || activeDoc?.name?.trim() || 'Untitled Project'
+
+    return fallback || 'Untitled Project'
+  })
+
+  const citations = computed(() => activeDocument.value?.citations ?? [])
 
   function createNewDocument() {
     const id = crypto.randomUUID()
@@ -25,7 +34,8 @@ export const useDocumentStore = defineStore('document', () => {
       professor: "",
       course: "",
       dueDate: "",
-      content: [] // Empty array matching your ContentBlock[] type
+      content: [],
+      citations: []
     }
     activeDocumentId.value = id
   }
@@ -60,8 +70,34 @@ export const useDocumentStore = defineStore('document', () => {
     if (!activeDocument.value) return
     activeDocument.value.content.push({
       type,
-      text: ""
+      text: "",
+      content: []
     })
+  }
+
+  function addCitation(name: string = currentProjectLabel.value, type: CitationType = CitationType.Book) {
+    if (!activeDocument.value) {
+      createNewDocument()
+    }
+
+    if (!activeDocument.value) return null
+
+    const citation: Citation = {
+      id: crypto.randomUUID(),
+      name,
+      type
+    }
+
+    activeDocument.value.citations.push(citation)
+    return citation
+  }
+  function deleteCitation(citationId: string) {
+    if (!activeDocument.value) return
+
+    const index = activeDocument.value.citations.findIndex(citation => citation.id === citationId)
+    if (index !== -1) {
+      activeDocument.value.citations.splice(index, 1)
+    }
   }
 
   // Watch for changes to the active document to update visual save states
@@ -84,9 +120,15 @@ export const useDocumentStore = defineStore('document', () => {
     documents,
     activeDocumentId,
     activeDocument,
+    currentProjectLabel,
+    citations,
     saveState,
     createNewDocument,
-    addContentBlock
+    addContentBlock,
+    addCitation,
+    deleteCitation,
+    moveContentBlock,
+    deleteContentBlock
   }
 },
 {

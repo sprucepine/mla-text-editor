@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import Sidebar from "@/components/Sidebar.vue"
 import { useDocumentStore } from "@/stores/documentStore";
-import { onMounted } from 'vue'; // Added onMounted
+import { onMounted } from 'vue';
 import Card from "@/components/Card.vue";
+import BlockEditor from "@/components/BlockEditor.vue"; // Imported your separate editor
 
 const documentStore = useDocumentStore();
 
 // On load, make sure there is an active document to type into
 onMounted(() => {
-  if (!documentStore.activeDocumentId || !documentStore.activeDocument) {
-    documentStore.addContentBlock();
+    if (!documentStore.activeDocumentId || !documentStore.activeDocument) {
+        documentStore.createNewDocument();
+    }
+
+    if (documentStore.activeDocument && documentStore.activeDocument.content.length === 0) {
+        documentStore.addContentBlock();
   }
 });
 </script>
@@ -58,15 +63,21 @@ onMounted(() => {
                                 <input v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="input input-bordered w-full mb-4" />
                             </label>
                         </Card>
+
                         <Card v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
-                            <textarea v-model="block.text" class="textarea textarea-bordered w-full" placeholder="  Type your content here..."></textarea>
+
+                            <BlockEditor v-model="documentStore.activeDocument.content[index]!" />
+
+                            <button class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph"><iconify-icon icon="mdi-delete" /></button>
+                            <button v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up"><iconify-icon icon="mdi-arrow-up" /></button>
+                            <button v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></button>
                         </Card>
                     </template>
 
                 </section>
             </main>
         </div>
-
+        <Sidebar />
         <Sidebar />
     </div>
 </template>

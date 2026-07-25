@@ -16,10 +16,16 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
+    "@tiptap/extension-mention": "^3.27.3",
+    "@tiptap/pm": "^3.27.3",
+    "@tiptap/starter-kit": "^3.27.3",
+    "@tiptap/suggestion": "^3.27.3",
+    "@tiptap/vue-3": "^3.27.3",
     "iconify-icon": "^3.0.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "tailwindcss": "^4.3.1",
+    "tippy.js": "^6.3.7",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
   },
