@@ -23,6 +23,14 @@ const copiedInline = ref(false);
 const documentStore = useDocumentStore();
 const currentCitationsCount = computed(() => documentStore.citations.length);
 
+function deleteCitation(citationId: string) {
+  documentStore.deleteCitation(citationId);
+  if (selectedCitation.value && selectedCitation.value.id === citationId) {
+    selectedCitation.value = null;
+    showingCitationDetails.value = false;
+  }
+}
+
 const citationFields = computed(() => {
   if (!selectedCitation.value) {
     return [];
@@ -128,7 +136,7 @@ async function copyGeneratedInlineCitation() {
           <label class="form-control w-full">
             <span class="label-text">Citation type</span>
             <select v-model="selectedCitation.type" class="select select-bordered w-full">
-            
+
               <option :value="CitationType.Book">Book</option>
               <option :value="CitationType.Article">Article</option>
               <option :value="CitationType.Website">Website</option>
@@ -195,6 +203,7 @@ async function copyGeneratedInlineCitation() {
             Inline: {{ buildMlaInlineCitation(block) || 'No inline citation generated yet.' }}
           </p>
           <button class="btn btn-sm btn-outline btn-primary" @click="openCitationDetails(block)">View Details</button>
+          <button class="btn btn-sm btn-outline btn-error ml-2" @click="deleteCitation(block.id)">Delete</button>
         </Card>
         <div class="modal-action">
           <button class="btn btn-ghost" @click="handleClose">Cancel</button>

@@ -91,6 +91,14 @@ export const useDocumentStore = defineStore('document', () => {
     activeDocument.value.citations.push(citation)
     return citation
   }
+  function deleteCitation(citationId: string) {
+    if (!activeDocument.value) return
+
+    const index = activeDocument.value.citations.findIndex(citation => citation.id === citationId)
+    if (index !== -1) {
+      activeDocument.value.citations.splice(index, 1)
+    }
+  }
 
   // Watch for changes to the active document to update visual save states
   watch(
@@ -118,6 +126,7 @@ export const useDocumentStore = defineStore('document', () => {
     createNewDocument,
     addContentBlock,
     addCitation,
+    deleteCitation,
     moveContentBlock,
     deleteContentBlock
   }
