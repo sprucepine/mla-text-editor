@@ -30,7 +30,7 @@ const blocks = [
 ]
 
 const tools = [
-  { name: 'Generate Inline Citation', badge: '', icon: 'f7:quote-bubble', description: 'Generate citations for your content.' },
+  { name: 'Citation Maker', badge: '', icon: 'f7:quote-bubble', description: 'Generate regular and inline citations for your content.' },
 
 ]
 
@@ -61,7 +61,7 @@ const handleBlockClick = (blockName: string) => {
 };
 const handleToolClick = (toolName: string) => {
   switch (toolName) {
-    case 'Generate Inline Citation':
+    case 'Citation Maker':
       openInlineCitationModal();
       break;
   }

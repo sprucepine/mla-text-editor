@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { useDocumentStore } from '@/stores/documentStore';
 import Card from '@/components/Card.vue';
-import { buildMlaCitation, getRequiredMlaFields } from '@/utils/mlaCitationGenerator';
+import { buildMlaCitation, buildMlaInlineCitation, getRequiredMlaFields } from '@/utils/mlaCitationGenerator';
 import { CitationType } from '@/types/types';
 import type { Citation } from '@/types/types';
 
@@ -17,7 +17,8 @@ const emit = defineEmits<{
 
 const showingCitationDetails = ref(false);
 const selectedCitation = ref<Citation | null>(null);
-const copied = ref(false);
+const copiedRegular = ref(false);
+const copiedInline = ref(false);
 
 const documentStore = useDocumentStore();
 const currentCitationsCount = computed(() => documentStore.citations.length);
@@ -36,6 +37,14 @@ const generatedCitationText = computed(() => {
   }
 
   return buildMlaCitation(selectedCitation.value);
+});
+
+const generatedInlineCitationText = computed(() => {
+  if (!selectedCitation.value) {
+    return '';
+  }
+
+  return buildMlaInlineCitation(selectedCitation.value);
 });
 
 function handleClose() {
@@ -76,12 +85,33 @@ async function copyGeneratedCitation() {
 
   try {
     await navigator.clipboard.writeText(citationText);
-    copied.value = true;
+    copiedRegular.value = true;
     window.setTimeout(() => {
-      copied.value = false;
+      copiedRegular.value = false;
     }, 1500);
   } catch {
-    copied.value = false;
+    copiedRegular.value = false;
+  }
+}
+
+async function copyGeneratedInlineCitation() {
+  if (!selectedCitation.value) {
+    return;
+  }
+
+  const inlineCitationText = generatedInlineCitationText.value;
+  if (!inlineCitationText) {
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(inlineCitationText);
+    copiedInline.value = true;
+    window.setTimeout(() => {
+      copiedInline.value = false;
+    }, 1500);
+  } catch {
+    copiedInline.value = false;
   }
 }
 </script>
@@ -98,6 +128,7 @@ async function copyGeneratedCitation() {
           <label class="form-control w-full">
             <span class="label-text">Citation type</span>
             <select v-model="selectedCitation.type" class="select select-bordered w-full">
+            
               <option :value="CitationType.Book">Book</option>
               <option :value="CitationType.Article">Article</option>
               <option :value="CitationType.Website">Website</option>
@@ -119,10 +150,16 @@ async function copyGeneratedCitation() {
           </div>
 
           <div class="rounded-box border border-base-300 bg-base-100 p-3">
-            <p class="text-sm font-semibold">MLA preview</p>
+            <p class="text-sm font-semibold">Regular citation (Works Cited)</p>
             <p class="mt-2 text-sm text-base-content/70">{{ generatedCitationText || 'Fill in the required fields to generate a copy-ready MLA citation.' }}</p>
             <button class="btn btn-sm btn-outline btn-primary mt-3" :disabled="!generatedCitationText" @click="copyGeneratedCitation">
-              {{ copied ? 'Copied!' : 'Copy MLA citation' }}
+              {{ copiedRegular ? 'Copied!' : 'Copy regular citation' }}
+            </button>
+
+            <p class="mt-4 text-sm font-semibold">Inline citation (in-text)</p>
+            <p class="mt-2 text-sm text-base-content/70">{{ generatedInlineCitationText || 'Add author/title and optional page number to generate an inline citation.' }}</p>
+            <button class="btn btn-sm btn-outline btn-primary mt-3" :disabled="!generatedInlineCitationText" @click="copyGeneratedInlineCitation">
+              {{ copiedInline ? 'Copied!' : 'Copy inline citation' }}
             </button>
           </div>
         </div>
@@ -130,11 +167,11 @@ async function copyGeneratedCitation() {
         <button class="btn btn-sm btn-outline btn-primary mt-4" @click="showingCitationDetails = false">Back</button>
       </div>
       <div v-else>
-        <h3 class="font-bold text-lg">Generate Inline Citation</h3>
+        <h3 class="font-bold text-lg">Citation Maker</h3>
         <button class="btn btn-lg btn-circle btn-ghost absolute right-2 top-2" @click="handleClose">✕</button>
         <button class="btn btn-sm btn-outline btn-primary absolute right-12 top-2" @click="() => openCitationDetails()">Add New Citation</button>
         <p class="py-2 text-sm text-base-content/70">
-          <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Open Citation Details</button> an inline citation for the currently selected text in the editor.
+          <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Open Citation Details</button> regular and inline citations for the currently selected text in the editor.
           Current project: <span class="font-semibold">{{ props.projectLabel }}</span>
         </p>
         <p class="py-2 text-sm text-base-content/70">
@@ -153,6 +190,9 @@ async function copyGeneratedCitation() {
         >
           <p class="py-2 text-sm text-base-content/70">
             {{ buildMlaCitation(block) || 'No MLA citation generated yet.' }}
+          </p>
+          <p class="pb-2 text-sm text-base-content/70">
+            Inline: {{ buildMlaInlineCitation(block) || 'No inline citation generated yet.' }}
           </p>
           <button class="btn btn-sm btn-outline btn-primary" @click="openCitationDetails(block)">View Details</button>
         </Card>

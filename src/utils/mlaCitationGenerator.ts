@@ -66,6 +66,33 @@ function formatAuthor(value?: string): string | null {
   return `${rest.join(' ')}, ${firstName}`;
 }
 
+function getAuthorLastName(value?: string): string | null {
+  if (!value?.trim()) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (trimmed.includes(',')) {
+    return trimmed.split(',')[0]?.trim() || null;
+  }
+
+  const parts = trimmed.split(/\s+/);
+  return parts[parts.length - 1] || null;
+}
+
+function getShortTitle(value?: string): string | null {
+  if (!value?.trim()) {
+    return null;
+  }
+
+  const words = value.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) {
+    return null;
+  }
+
+  return words.slice(0, 3).join(' ');
+}
+
 export function buildMlaCitation(citation: Partial<Citation> & Pick<Citation, 'type'>): string {
   const type = citation.type ?? CitationType.Other;
   const author = formatAuthor(citation.author);
@@ -111,4 +138,25 @@ export function buildMlaCitation(citation: Partial<Citation> & Pick<Citation, 't
       return `${otherParts.join('. ')}.`;
     }
   }
+}
+
+export function buildMlaInlineCitation(citation: Partial<Citation>): string {
+  const authorLastName = getAuthorLastName(citation.author);
+  const title = getShortTitle(citation.title);
+  const pageNumber = citation.pageNumber?.trim();
+
+  const sourcePart = authorLastName ?? (title ? `\"${title}\"` : null);
+  if (!sourcePart && !pageNumber) {
+    return '';
+  }
+
+  if (!sourcePart) {
+    return `(${pageNumber})`;
+  }
+
+  if (!pageNumber) {
+    return `(${sourcePart})`;
+  }
+
+  return `(${sourcePart} ${pageNumber})`;
 }
