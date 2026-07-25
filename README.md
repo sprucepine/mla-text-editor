@@ -1,5 +1,7 @@
 # mla-text-editor
 
+<img width="1582" height="955" alt="Screenshot 2026-07-25 at 1 25 17 PM" src="https://github.com/user-attachments/assets/36dc4f0f-d538-4a8f-82cf-98c826a7cbd2" />
+
 MLA Text Editor is a block-based text editor that makes it easier to maintain the MLA format. 
 
 ### How to run it locally
