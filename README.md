@@ -1,6 +1,35 @@
 # mla-text-editor
 
-This template should help get you started developing with Vue 3 in Vite.
+MLA Text Editor is a block-based text editor that makes it easier to maintain the MLA format. 
+
+### How to run it locally
+
+This project is a local Vite/Vue app, so you can run it directly on your machine.
+
+- Required language version: Node.js 20.19+ (or any version compatible with the `package.json` engine range `^20.19.0 || >=22.12.0`).
+- System dependencies: none beyond Node.js and npm.
+- Environment variables: none required for local development.
+- Install dependencies: `npm install`
+- Start the dev server: `npm run dev`
+
+The app uses Vue.js for two-way binding and reactivity, along with standard Vue ecosystem libraries such as Pinia.
+
+### GitHub Actions
+
+This repo uses two actions that run on commits to dev and main.
+
+Create Dependency Licenses - runs on dev and main
+
+Creates a pull request with a list of dependency licenses at https://github.com/sprucepine/mla-text-editor/blob/main/THIRD_PARTY_LICENSES.md. This command will also remove any build-only dependencies from the project.
+
+Push to GitHub Pages - runs only on main
+
+Pushes the app to GitHub pages to be viewed everywhere (production environment).
+
+
+
+
+<!-- This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
@@ -45,4 +74,4 @@ npm run build
 
 ```sh
 npm run lint
-```
+``` -->
