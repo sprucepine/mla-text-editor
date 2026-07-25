@@ -68,10 +68,10 @@ function exportDocumentAsPdf() {
     </div>
 
     <div v-if="documentStore.activeDocument" class="navbar-end gap-2">
-      <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
+      <!-- <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
         <iconify-icon icon="mdi-download" />
         HTML
-      </button>
+      </button> -->
       <button class="btn btn-sm btn-primary" @click="exportDocumentAsPdf" title="Export MLA as PDF">
         <iconify-icon icon="mdi-file-pdf-box" />
         PDF
