@@ -1,3 +1,5 @@
+import type { JSONContent } from "@tiptap/vue-3";
+
 export enum DocumentType {
   body = "body",
   heading2 = "heading2",
@@ -7,6 +9,28 @@ export enum DocumentType {
 export interface ContentBlock {
   type: DocumentType;
   text: string;
+  content: JSONContent[]; // Recursive definition for nested content blocks
+}
+
+export interface Citation {
+  id: string;
+  name: string;
+  author?: string;
+  title?: string;
+  year?: string;
+  publisher?: string;
+  containerTitle?: string;
+  pageNumber?: string;
+  url?: string;
+  type: CitationType;
+}
+
+export enum CitationType {
+  Book = 'Book',
+  Article = 'Article',
+  Website = 'Website',
+  Video = 'Video',
+  Other = 'Other'
 }
 
 export interface DocumentItem {
@@ -20,6 +44,7 @@ export interface DocumentItem {
   course: string;
   dueDate: string;
   content: ContentBlock[];
+  citations: Citation[];
 }
 
 export enum SaveState {
@@ -29,3 +54,4 @@ export enum SaveState {
   OldSaved = 'oldSaved',
   Error = 'error',
 }
+

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onMounted, onBeforeUnmount } from 'vue'
+import ModalView from '@/components/ModalView.vue'
+
 // Make sure to import your Icon component if not globally registered
 // import { Icon } from '@iconify/vue'
 
@@ -15,19 +16,6 @@ const emit = defineEmits<{
   save: [title: string, icon: string]
   close: []
 }>()
-function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    closeDialog()
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeydown)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown)
-})
 
 const draftTitle = ref(props.initialTitle || 'Untitled Document')
 const draftIcon = ref(props.initialIcon || 'lucide:file-text')
@@ -63,59 +51,56 @@ function saveDialog() {
 </script>
 
 <template>
-  <div class="modal modal-open">
-    <div class="modal-box">
-      <h3 class="text-lg font-semibold">Change file title</h3>
-      <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
+  <ModalView :title="props.initialTitle" :description="props.initialIcon" @close="closeDialog">
+    <h3 class="text-lg font-semibold">Change file title</h3>
+    <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
 
-      <label class="floating-label mt-4">
-        <span class="label-text">File title</span>
-        <input
-          v-model="draftTitle"
-          type="text"
-          placeholder="Untitled Document"
-          class="input input-bordered w-full"
-          @keydown.enter.prevent="saveDialog"
-        />
-      </label>
+    <label class="floating-label mt-4">
+      <span class="label-text">File title</span>
+      <input
+        v-model="draftTitle"
+        type="text"
+        placeholder="Untitled Document"
+        class="input input-bordered w-full"
+        @keydown.enter.prevent="saveDialog"
+      />
+    </label>
 
-      <label class="floating-label mt-4">
-        <span class="label-text">File icon identifier</span>
-        <input
-          v-model="draftIcon"
-          type="text"
-          placeholder="lucide:file-text"
-          class="input input-bordered w-full"
-          @keydown.enter.prevent="saveDialog"
-        />
-      </label>
+    <label class="floating-label mt-4">
+      <span class="label-text">File icon identifier</span>
+      <input
+        v-model="draftIcon"
+        type="text"
+        placeholder="lucide:file-text"
+        class="input input-bordered w-full"
+        @keydown.enter.prevent="saveDialog"
+      />
+    </label>
 
-      <div class="mt-4">
-        <span class="text-xs font-medium text-base-content/60 block mb-2">Quick Select School Icon:</span>
-        <div class="grid grid-cols-6 gap-2 p-2 bg-base-200 rounded-lg">
-          <button
-            v-for="icon in schoolIcons"
-            :key="icon"
-            type="button"
-            class="btn btn-square btn-sm btn-ghost flex items-center justify-center transition-all"
-            :class="{ 'btn-active btn-primary text-primary-content': draftIcon === icon }"
-            @click="selectIcon(icon)"
-          >
-            <iconify-icon :icon="icon" class="w-5 h-5 flex items-center justify-center" />
-          </button>
-        </div>
-        <p class="text-xs text-base-content/60 mt-2">
-          Looking for more icons? You can visit <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary">Iconify</a> to find more icons.
-        </p>
+    <div class="mt-4">
+      <span class="text-xs font-medium text-base-content/60 block mb-2">Quick Select School Icon:</span>
+      <div class="grid grid-cols-6 gap-2 p-2 bg-base-200 rounded-lg">
+        <button
+          v-for="icon in schoolIcons"
+          :key="icon"
+          type="button"
+          class="btn btn-square btn-sm btn-ghost flex items-center justify-center transition-all"
+          :class="{ 'btn-active btn-primary text-primary-content': draftIcon === icon }"
+          @click="selectIcon(icon)"
+        >
+          <iconify-icon :icon="icon" class="w-5 h-5 flex items-center justify-center" />
+        </button>
       </div>
-
-      <div class="modal-action">
-        <button class="btn btn-ghost" type="button" @click="closeDialog">Cancel</button>
-        <button class="btn btn-primary" type="button" @click="saveDialog">Save</button>
-      </div>
+      <p class="text-xs text-base-content/60 mt-2">
+        Looking for more icons? You can visit <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary">Iconify</a> to find more icons.
+      </p>
     </div>
-    <button class="modal-backdrop" type="button" aria-label="close" @click="closeDialog"></button>
-  </div>
+
+    <div class="modal-action">
+      <button class="btn btn-ghost" type="button" @click="closeDialog">Cancel</button>
+      <button class="btn btn-primary" type="button" @click="saveDialog">Save</button>
+    </div>
+  </ModalView>
 </template>
 
 <style scoped>
