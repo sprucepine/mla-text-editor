@@ -6,12 +6,8 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, watch } from 'vue'
-import { useEditor, EditorContent, VueRenderer } from '@tiptap/vue-3'
+import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import Mention from '@tiptap/extension-mention'
-import type { SuggestionProps } from '@tiptap/suggestion'
-import tippy from 'tippy.js'
-import type { Instance } from 'tippy.js'
 import type { ContentBlock } from '@/types/types'
 
 const props = defineProps<{
@@ -27,98 +23,7 @@ const editor = useEditor({
     type: 'doc',
     content: props.modelValue.content
   },
-  extensions: [
-    StarterKit,
-    Mention.configure({
-      HTMLAttributes: {
-        class: 'citation-pill',
-      },
-      // Configure the suggestion behavior
-      suggestion: {
-        char: '/',
-        items: ({ query }: { query: string }): MenuItem[] => {
-          return [
-            { label: 'Inline Citation', id: 'citation' }
-          ].filter(item => item.label.toLowerCase().startsWith(query.toLowerCase()))
-        },
-        render: () => {
-          let component: (VueRenderer & { ref: MenuListInstance | null }) | null = null
-          let popup: Instance | null = null
-
-          return {
-            onStart: (suggestionProps: SuggestionProps<MenuItem>) => {
-              component = new VueRenderer(MenuList, {
-                props: {
-                  ...suggestionProps,
-                  onCommand: () => {
-                    requestAnimationFrame(() => openCitationMenuFromSelection())
-                  },
-                },
-                editor: suggestionProps.editor,
-              }) as VueRenderer & { ref: MenuListInstance | null }
-
-              const clientRect = suggestionProps.clientRect
-              const element = component.element
-              const bodyElement = document.body
-
-              if (!element || !bodyElement) return
-
-              const referenceClientRect = () => clientRect?.() ?? new DOMRect(0, 0, 0, 0)
-
-              popup = tippy(bodyElement, {
-                getReferenceClientRect: referenceClientRect,
-                appendTo: () => bodyElement,
-                content: element,
-                showOnCreate: true,
-                interactive: true,
-                trigger: 'manual',
-                placement: 'bottom-start',
-                theme: 'slash-menu',
-                zIndex: 9999,
-              })
-            },
-            onUpdate(suggestionProps: SuggestionProps<MenuItem>) {
-              component?.updateProps({
-                ...suggestionProps,
-                onCommand: () => {
-                  requestAnimationFrame(() => openCitationMenuFromSelection())
-                },
-              })
-
-              const clientRect = suggestionProps.clientRect
-              popup?.setProps({
-                getReferenceClientRect: () => clientRect?.() ?? new DOMRect(0, 0, 0, 0),
-              })
-            },
-            onKeyDown(suggestionProps: { event: KeyboardEvent }) {
-              if (suggestionProps.event.key === 'Escape') {
-                popup?.hide()
-                return true
-              }
-              return component?.ref?.onKeyDown(suggestionProps) ?? false
-            },
-            onExit() {
-              popup?.destroy()
-              component?.destroy()
-            },
-          }
-        },
-      },
-    }),
-  ],
-  editorProps: {
-    handleClick: (_view, _pos, event) => {
-      const target = event.target as Element | null
-      const pill = target?.closest?.('.citation-pill')
-
-      if (pill instanceof Element) {
-        openCitationMenuAtElement(pill)
-        return true
-      }
-
-      return false
-    },
-  },
+  extensions: [StarterKit],
   onUpdate: ({ editor: currentEditor }) => {
     const json = currentEditor.getJSON()
     emit('update:modelValue', {
@@ -183,23 +88,5 @@ onBeforeUnmount(() => {
   border-radius: 9999px;
   font-weight: 600;
   cursor: pointer;
-}
-
-:global(.tippy-box[data-theme~='slash-menu']) {
-  background: transparent;
-  box-shadow: none;
-}
-
-:global(.tippy-box[data-theme~='slash-menu'] > .tippy-content) {
-  padding: 0;
-}
-
-:global(.tippy-box[data-theme~='citation-menu']) {
-  background: transparent;
-  box-shadow: none;
-}
-
-:global(.tippy-box[data-theme~='citation-menu'] > .tippy-content) {
-  padding: 0;
 }
 </style>

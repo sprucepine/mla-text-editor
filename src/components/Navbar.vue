@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useDocumentStore } from '@/stores/documentStore'
 import RenameDocumentModal from '@/components/RenameDocumentModal.vue'
 import Label from './Label.vue'
+import { downloadMlaDocumentExport, exportMlaDocumentAsPdf } from '@/utils/exportMlaDocument'
 
 defineOptions({ name: 'AppNavbar' })
 
@@ -29,6 +30,18 @@ function saveTitle(title: string, icon: string) {
 function closeRenameModal() {
   isRenameModalOpen.value = false
 }
+
+function exportDocument() {
+  if (!documentStore.activeDocument) return
+
+  downloadMlaDocumentExport(documentStore.activeDocument)
+}
+
+function exportDocumentAsPdf() {
+  if (!documentStore.activeDocument) return
+
+  exportMlaDocumentAsPdf(documentStore.activeDocument)
+}
 </script>
 
 <template>
@@ -54,7 +67,15 @@ function closeRenameModal() {
         </div>
     </div>
 
-    <div class="navbar-end">
+    <div v-if="documentStore.activeDocument" class="navbar-end gap-2">
+      <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
+        <iconify-icon icon="mdi-download" />
+        HTML
+      </button>
+      <button class="btn btn-sm btn-primary" @click="exportDocumentAsPdf" title="Export MLA as PDF">
+        <iconify-icon icon="mdi-file-pdf-box" />
+        PDF
+      </button>
     </div>
   </header>
 
