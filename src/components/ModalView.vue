@@ -3,10 +3,10 @@
     <div class="modal-box" @click.stop>
       <h3 class="font-bold text-lg">{{ props.title }}</h3>
       <button class="btn btn-lg btn-circle btn-ghost absolute right-2 top-2" type="button" @click="handleClose">✕</button>
-      <p class="py-2 text-sm text-base-content/70">
+      <p v-if="props.description" class="py-2 text-sm text-base-content/70">
         {{ props.description }}
       </p>
-      <div class="mt-4">
+      <div :class="props.description ? 'mt-4' : ''">
         <slot />
       </div>
     </div>
@@ -16,10 +16,16 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from 'vue'
 
-const props = defineProps<{
-  title: string;
-  description: string;
-}>();
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+})
 
 const emits = defineEmits<{
   (event: 'close'): void
