@@ -5,6 +5,7 @@ import Card from '@/components/Card.vue';
 import { buildMlaCitation, buildMlaInlineCitation, getRequiredMlaFields } from '@/utils/mlaCitationGenerator';
 import { CitationType } from '@/types/types';
 import type { Citation } from '@/types/types';
+import ModalView from '@/components/ModalView.vue';
 
 const props = defineProps<{
   projectLabel: string;
@@ -125,10 +126,9 @@ async function copyGeneratedInlineCitation() {
 </script>
 
 <template>
-  <div class="modal modal-open">
-    <div class="modal-box">
+  <ModalView :title="'Citation Maker'" @close="handleClose">
+    <!-- Add new citation -->
       <div v-if="showingCitationDetails">
-        <h3 class="font-bold text-lg">MLA Citation Details</h3>
         <p class="py-2 text-sm text-base-content/70">
           Only the fields required for the selected citation type are shown below.
         </p>
@@ -174,20 +174,21 @@ async function copyGeneratedInlineCitation() {
 
         <button class="btn btn-sm btn-outline btn-primary mt-4" @click="showingCitationDetails = false">Back</button>
       </div>
-      <div v-else>
+      <!-- Show list of citations -->
+      <div v-else-if="documentStore.citations.length === 0">
         <h3 class="font-bold text-lg">Citation Maker</h3>
         <button class="btn btn-lg btn-circle btn-ghost absolute right-2 top-2" @click="handleClose">✕</button>
-        <button class="btn btn-sm btn-outline btn-primary absolute right-12 top-2" @click="() => openCitationDetails()">Add New Citation</button>
         <p class="py-2 text-sm text-base-content/70">
-          <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Open Citation Details</button> regular and inline citations for the currently selected text in the editor.
+          No citations have been added yet. Click the button below to add a new citation for the currently selected text in the editor.
           Current project: <span class="font-semibold">{{ props.projectLabel }}</span>
         </p>
+        <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Add New Citation</button>
+      </div>
+      <!-- Show list of citations -->
+      <div v-else>
+        <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Add New Citation</button>
         <p class="py-2 text-sm text-base-content/70">
-          Exposed citations: <span class="font-semibold">{{ currentCitationsCount }}</span>
-        </p>
-        <p class="py-4">This citation will be attached to the currently active project.</p>
-        <p class="py-2 text-sm text-base-content/70">
-          Sample citations:
+          Total citations: <span class="font-semibold">{{ currentCitationsCount }}</span>
         </p>
         <Card
           v-for="block in documentStore.citations"
@@ -205,11 +206,6 @@ async function copyGeneratedInlineCitation() {
           <button class="btn btn-sm btn-outline btn-primary" @click="openCitationDetails(block)">View Details</button>
           <button class="btn btn-sm btn-outline btn-error ml-2" @click="deleteCitation(block.id)">Delete</button>
         </Card>
-        <div class="modal-action">
-          <button class="btn btn-ghost" @click="handleClose">Cancel</button>
-          <button class="btn btn-primary" @click="handleGenerate">Generate</button>
-        </div>
       </div>
-    </div>
-  </div>
+    </ModalView>
 </template>
