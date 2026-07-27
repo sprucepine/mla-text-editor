@@ -76,6 +76,9 @@ function exportDocumentAsPdf() {
         <iconify-icon icon="mdi-file-pdf-box" />
         PDF
       </button>
+        <label for="my-sidebar" class="btn btn-sm btn-ghost lg:hidden mr-2" aria-label="Open sidebar" title="Open Sidebar">
+          <iconify-icon icon="lucide:panel-right-open" />
+        </label>
     </div>
   </header>
 
