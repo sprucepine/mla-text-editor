@@ -1,0 +1,58 @@
+name: Auto-Update Version on Dev Branch
+
+on:
+  push:
+    branches: [ "main" ]
+  # Allows manual triggering from the GitHub Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-version-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the full repository history
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history to get the total commit count
+
+      # Step 2: Calculate total commit count across all branches
+      - name: Calculate Total Commit Count
+        id: versioning
+        run: |
+          TOTAL_COMMITS=$(git rev-list --all --count)
+          echo "Total Commit Count: $TOTAL_COMMITS"
+          echo "total_commits=$TOTAL_COMMITS" >> $GITHUB_OUTPUT
+
+      # Step 3: Switch to the dev branch and pull latest changes
+      - name: Switch to dev branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin dev
+          git checkout dev
+          git pull origin dev
+
+      # Step 4: Update package.json version
+      - name: Update package.json Version
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = \`1.0.\${process.env.TOTAL_COMMITS}\`;
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+        env:
+          TOTAL_COMMITS: ${{ steps.versioning.outputs.total_commits }}
+
+      # Step 5: Commit and push directly to dev
+      - name: Commit and Push to dev
+        run: |
+          git add package.json
+          # [skip ci] prevents triggering workflows configured to run on pushes to dev
+          git commit -m "chore: bump package.json version to 1.0.${{ steps.versioning.outputs.total_commits }} [skip ci]" || echo "No changes to commit"
+          git push origin dev
