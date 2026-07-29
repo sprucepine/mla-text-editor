@@ -8,12 +8,12 @@ import versionData from '../../package.json';
 
       <div class="flex items-center gap-2">
         <span class="font-medium text-foreground">MLA Text Editor</span>
-        <span class="text-base-300">•</span>
+        <span>•</span>
         <span class="rounded-full bg-base-200 px-2 py-0.5 text-[10px] font-mono font-medium tracking-wide">
           {{ versionData.version }}
         </span>
       </div>
-
+      <span class="text-xs">MLA Text Editor is currently in active development. Make sure to back up your work regularly.</span>
       <nav class="flex items-center gap-4 sm:gap-6">
         <a
           href="https://github.com/sprucepine/mla-text-editor"
@@ -23,6 +23,7 @@ import versionData from '../../package.json';
         >
           <iconify-icon icon="mdi-github" class="text-base" />
           <span>GitHub</span>
+          <iconify-icon icon="mdi-open-in-new" class="text-base text-xs" />
         </a>
 
         <a
@@ -33,6 +34,7 @@ import versionData from '../../package.json';
         >
           <iconify-icon icon="mdi-bug-outline" class="text-base" />
           <span>Report Bugs</span>
+          <iconify-icon icon="mdi-open-in-new" class="text-base text-xs" />
         </a>
 
         <a
@@ -43,6 +45,7 @@ import versionData from '../../package.json';
         >
           <iconify-icon icon="mdi-license" class="text-base" />
           <span>Licenses</span>
+          <iconify-icon icon="mdi-open-in-new" class="text-base text-xs" />
         </a>
       </nav>
 
