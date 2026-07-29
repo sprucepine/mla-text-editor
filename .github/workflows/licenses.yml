@@ -23,7 +23,7 @@ jobs:
         run: npm ci --omit=dev
 
       - name: Generate Licenses File
-        run: npx license-checker-rseidelsohn --production --markdown > THIRD_PARTY_LICENSES.md
+        run: npx license-checker-rseidelsohn --production --excludePackages "mla-text-editor" --markdown > THIRD_PARTY_LICENSES.md
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
