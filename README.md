@@ -26,16 +26,17 @@ The app uses Vue.js for two-way binding and reactivity, along with standard Vue 
 
 This repo uses two actions that run on commits to dev and main.
 
-Create Dependency Licenses - runs on dev and main
+Create Dependency Licenses - runs on `dev` and `main`
 
 Creates a pull request with a list of dependency licenses at https://github.com/sprucepine/mla-text-editor/blob/main/THIRD_PARTY_LICENSES.md. This command will also remove any build-only dependencies from the project.
 
-Push to GitHub Pages - runs only on main
+Push to GitHub Pages - runs on `main`
 
 Pushes the app to GitHub pages to be viewed everywhere (production environment).
 
+Auto-Update Version on Dev Branch - runs on `dev` 
 
-
+Whenever a build is published on main, a commit is immediately pushed to dev to provide a verison number to the app.
 
 <!-- This template should help get you started developing with Vue 3 in Vite.
 
