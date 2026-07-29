@@ -1,0 +1,60 @@
+name: Auto-Update Version PR
+
+on:
+  push:
+    branches: [ "dev" ]
+  # Allows you to manually trigger the workflow from the Actions tab in GitHub
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-version-and-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the full git repository history
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Pulls full commit history so total counts work
+
+      # Step 2: Calculate total commit count across all branches
+      - name: Calculate Total Commit Count
+        id: versioning
+        run: |
+          TOTAL_COMMITS=$(git rev-list --all --count)
+          echo "Total Commit Count: $TOTAL_COMMITS"
+          echo "total_commits=$TOTAL_COMMITS" >> $GITHUB_OUTPUT
+
+      # Step 3: Update the version in package.json
+      - name: Update package.json Version
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = \`1.0.\${process.env.TOTAL_COMMITS}\`;
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+        env:
+          TOTAL_COMMITS: ${{ steps.versioning.outputs.total_commits }}
+
+      # Step 4: Open a PR with the updated package.json
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: update package.json version to 1.0.${{ steps.versioning.outputs.total_commits }}"
+          branch: "auto/update-version"
+          delete-branch: true
+          title: "chore: bump app version to 1.0.${{ steps.versioning.outputs.total_commits }}"
+          body: |
+            Automated Version Update
+
+            - **New Version:** `1.0.${{ steps.versioning.outputs.total_commits }}`
+            - **Total Commits:** `${{ steps.versioning.outputs.total_commits }}`
+            - **Triggered by:** `@${{ github.actor }}`
+          labels: |
+            automated-pr
+            version-bump
