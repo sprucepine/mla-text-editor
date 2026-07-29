@@ -119,7 +119,6 @@
 - [magic-string-ast@1.0.3](https://github.com/sxzz/magic-string-ast) - MIT
 - [magic-string@0.30.21](https://github.com/Rich-Harris/magic-string) - MIT
 - [mitt@3.0.1](https://github.com/developit/mitt) - MIT
-- [mla-text-editor@0.0.0](undefined) - UNLICENSED
 - [mlly@1.8.2](https://github.com/unjs/mlly) - MIT
 - [muggle-string@0.4.1](https://github.com/johnsoncodehk/muggle-string) - MIT
 - [nanoid@3.3.12](https://github.com/ai/nanoid) - MIT
