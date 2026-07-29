@@ -4,6 +4,7 @@ import { useDocumentStore } from "@/stores/documentStore";
 import { onMounted } from 'vue';
 import Card from "@/components/Card.vue";
 import BlockEditor from "@/components/BlockEditor.vue"; // Imported your separate editor
+import Footer from "@/components/Footer.vue"; // Import Footer component
 
 const documentStore = useDocumentStore();
 
@@ -24,7 +25,8 @@ onMounted(() => {
         <input id="my-sidebar" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-content flex min-h-0 flex-col bg-base-200">
-            <main class="flex-1 overflow-y-auto p-6">
+            <main class="flex-1 overflow-y-auto">
+              <section class="p-6">
                 <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
                     <div>
                       <h1 class="text-3xl font-semibold tracking-tight">
@@ -73,8 +75,9 @@ onMounted(() => {
                             <button v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></button>
                         </Card>
                     </template>
-
+                  </section>
                 </section>
+              <Footer />
             </main>
         </div>
         <Sidebar />
