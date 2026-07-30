@@ -44,11 +44,11 @@ onMounted(() => {
 
                         <Card v-if="documentStore.activeDocument" title="Heading Information">
                             <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>
-                            <label class="floating-label">
+                              <label class="floating-label">
                                 <span class="label-text">Document Title</span>
                                 <input v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="input input-bordered w-full mb-4" />
                             </label>
-                            <label class="floating-label">
+                              <label class="floating-label">
                                 <span class="label-text">Your Name</span>
                                 <input v-model="documentStore.activeDocument.name" type="text" placeholder="Your Name" class="input input-bordered w-full mb-4" />
                             </label>
