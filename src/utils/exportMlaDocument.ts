@@ -172,6 +172,11 @@ function createExportFileName(documentItem: DocumentItem, extension: 'html' | 'p
   return `${fallbackName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'mla-document'}.${extension}`
 }
 
+function isMeaningfulCitation(citation: string): boolean {
+  const normalized = citation.replace(/\s+/g, '').replace(/\./g, '')
+  return normalized.length > 0
+}
+
 export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
   const title = documentItem.title.trim() || documentItem.fileTitle.trim() || 'Untitled Document'
   const headingLines = [documentItem.name, documentItem.professor, documentItem.course, formatMlaDate(documentItem.dueDate)]
@@ -184,7 +189,7 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
 
   const worksCitedEntries = documentItem.citations
     .map((citation) => buildMlaCitation(citation))
-    .filter(Boolean)
+    .filter((citation): citation is string => isMeaningfulCitation(citation))
 
   const bodyHtml = bodyParagraphs.length > 0
     ? bodyParagraphs.map((paragraph) => `<p class="body-paragraph">${escapeHtml(paragraph)}</p>`).join('\n        ')
@@ -192,7 +197,7 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
 
   const worksCitedHtml = worksCitedEntries.length > 0
     ? worksCitedEntries.map((citation) => `<p class="works-cited-entry">${escapeHtml(citation)}</p>`).join('\n        ')
-    : '<p class="works-cited-entry works-cited-empty">No citations were added to this document.</p>'
+    : ''
 
   const headingHtml = headingLines
     .map((line) => `<p>${escapeHtml(line)}</p>`)
@@ -298,10 +303,11 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
         ${bodyHtml}
       </section>
 
+      ${worksCitedEntries.length > 0 ? `
       <section class="works-cited">
         <h2 class="works-cited-title">Works Cited</h2>
         ${worksCitedHtml}
-      </section>
+      </section>` : ''}
     </main>
   </body>
 </html>`
@@ -525,20 +531,17 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
       }
     }
   }
-
-  startNewPage()
-  writeLines(['Works Cited'], { align: 'center' })
-  cursorY += lineHeight
-
   const worksCitedEntries = documentItem.citations
     .slice()
     .sort((left, right) => getCitationSortKey(left).localeCompare(getCitationSortKey(right)))
     .map((citation) => buildMlaCitation(citation))
-    .filter(Boolean)
+    .filter((citation): citation is string => isMeaningfulCitation(citation))
 
-  if (worksCitedEntries.length === 0) {
-    writeParagraph('No citations were added to this document.')
-  } else {
+  if (worksCitedEntries.length !== 0) {
+    startNewPage()
+    writeLines(['Works Cited'], { align: 'center' })
+    cursorY += lineHeight
+
     for (const citation of worksCitedEntries) {
       writeParagraph(citation, { hangingIndent: 36 })
     }
