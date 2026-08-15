@@ -8,6 +8,22 @@ export const useDocumentStore = defineStore('document', () => {
   const activeDocumentId = ref<string | null>(null)
   const saveState = ref<SaveState>(SaveState.Idle)
 
+  function buildNewDocument(id: string): DocumentItem {
+    return {
+      id,
+      fileTitle: "",
+      fileIcon: "",
+      headerName: "",
+      title: "",
+      name: "",
+      professor: "",
+      course: "",
+      dueDate: "",
+      content: [],
+      citations: []
+    }
+  }
+
   const activeDocument = computed(() => {
     if (!activeDocumentId.value) return null
     return documents.value[activeDocumentId.value]
@@ -21,23 +37,32 @@ export const useDocumentStore = defineStore('document', () => {
   })
 
   const citations = computed(() => activeDocument.value?.citations ?? [])
+  const documentList = computed(() => Object.values(documents.value))
 
   function createNewDocument() {
     const id = crypto.randomUUID()
-    documents.value[id] = {
-      id,
-      fileTitle: "",
-      fileIcon: "",
-      headerName: "",
-      title: "",
-      name: "",
-      professor: "",
-      course: "",
-      dueDate: "",
-      content: [],
-      citations: []
-    }
+    documents.value[id] = buildNewDocument(id)
     activeDocumentId.value = id
+  }
+
+  function selectDocument(id: string) {
+    if (!documents.value[id]) return false
+
+    activeDocumentId.value = id
+    return true
+  }
+
+  function deleteDocument(id: string) {
+    if (!documents.value[id]) return false
+
+    delete documents.value[id]
+
+    if (activeDocumentId.value === id) {
+      const remainingIds = Object.keys(documents.value)
+      activeDocumentId.value = remainingIds[0] ?? null
+    }
+
+    return true
   }
 
   function moveContentBlock(fromIndex: number, toIndex: number) {
@@ -120,10 +145,13 @@ export const useDocumentStore = defineStore('document', () => {
     documents,
     activeDocumentId,
     activeDocument,
+    documentList,
     currentProjectLabel,
     citations,
     saveState,
     createNewDocument,
+    selectDocument,
+    deleteDocument,
     addContentBlock,
     addCitation,
     deleteCitation,

@@ -31,12 +31,6 @@ function closeRenameModal() {
   isRenameModalOpen.value = false
 }
 
-function exportDocument() {
-  if (!documentStore.activeDocument) return
-
-  downloadMlaDocumentExport(documentStore.activeDocument)
-}
-
 function exportDocumentAsPdf() {
   if (!documentStore.activeDocument) return
 

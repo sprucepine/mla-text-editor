@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import ModalView from '@/components/ModalView.vue'
+import { useDocumentStore } from '@/stores/documentStore'
+import Label from './Label.vue';
 
 // Make sure to import your Icon component if not globally registered
 // import { Icon } from '@iconify/vue'
@@ -19,6 +21,30 @@ const emit = defineEmits<{
 
 const draftTitle = ref(props.initialTitle || 'Untitled Document')
 const draftIcon = ref(props.initialIcon || 'lucide:file-text')
+
+const documentStore = useDocumentStore()
+const documentList = computed(() => Object.values(documentStore.documents))
+
+function switchToDocument(id: string) {
+  const selected = documentStore.selectDocument(id)
+  if (!selected) return
+  emit('close')
+}
+
+function makeNewDocument() {
+  documentStore.createNewDocument()
+  emit('close')
+}
+
+function removeDocument(id: string) {
+  const deleted = documentStore.deleteDocument(id)
+  if (!deleted) return
+
+  if (!documentStore.activeDocumentId) {
+    documentStore.createNewDocument()
+  }
+  emit('close')
+}
 
 // School-focused Iconify identifiers (using Lucide/Mdi sets for consistency)
 const schoolIcons = [
@@ -52,6 +78,37 @@ function saveDialog() {
 
 <template>
   <ModalView :title="props.initialTitle" @close="closeDialog">
+    <!-- Switch to another document -->
+<div class="mt-4">
+  <h4 class="text-sm font-semibold mb-2">Switch document</h4>
+
+  <div class="flex flex-col gap-2 max-h-48 overflow-y-auto">
+    <button
+      v-for="doc in documentList"
+      :key="doc.id"
+      type="button"
+      class="btn btn-sm justify-between"
+      :class="doc.id === documentStore.activeDocumentId ? 'btn-primary' : 'btn-ghost'"
+      @click="switchToDocument(doc.id)"
+    >
+    <Label  :text="doc.fileTitle || doc.title || 'Untitled Document'" :icon="doc.fileIcon || 'mdi-file-document-outline'" />
+    </button>
+  </div>
+
+  <div class="mt-3 flex gap-2">
+    <button class="btn btn-sm btn-outline" type="button" @click="makeNewDocument">
+      New
+    </button>
+    <button
+      v-if="documentStore.activeDocumentId"
+      class="btn btn-sm btn-error btn-outline"
+      type="button"
+      @click="removeDocument(documentStore.activeDocumentId)"
+    >
+      Delete Current
+    </button>
+  </div>
+</div>
     <h3 class="text-lg font-semibold">Change file title</h3>
     <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
 
