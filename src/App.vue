@@ -5,11 +5,14 @@
 </script>
 
 <template>
-  <div class="flex h-screen flex-col bg-base-200 text-base-content">
-    <Navbar />
-    <Main />
+    <UApp>
+      <RouterView />
+      <div class="flex h-screen flex-col bg-base-200 text-base-content">
+        <Navbar />
+        <Main />
 
-  </div>
+      </div>
+    </UApp>
 </template>
 
   <!-- <main class="flex min-h-screen items-center justify-center p-6">
