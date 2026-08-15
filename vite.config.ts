@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import ui from '@nuxt/ui/vite'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
@@ -10,7 +10,6 @@ export default defineConfig({
   base: '/mla-text-editor/', // This fixes the blank page on GitHub Pages!
   plugins: [
     tailwindcss(),
-
     vue({
       template: {
         compilerOptions: {
@@ -20,6 +19,7 @@ export default defineConfig({
         }
       }
     }),
+    ui(),
     vueDevTools(),
   ],
   server: {

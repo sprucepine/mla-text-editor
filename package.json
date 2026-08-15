@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-s build-only type-check",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
@@ -15,6 +15,7 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "@nuxt/ui": "^4.10.0",
     "@tailwindcss/vite": "^4.3.1",
     "@tiptap/extension-mention": "^3.27.3",
     "@tiptap/pm": "^3.27.3",
@@ -25,7 +26,7 @@
     "jspdf": "^4.2.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "tailwindcss": "^4.3.1",
+    "tailwindcss": "^4.3.3",
     "tippy.js": "^6.3.7",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
