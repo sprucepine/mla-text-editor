@@ -70,7 +70,6 @@ const handleToolClick = (toolName: string) => {
 </script>
 
 <template>
-<UDashboardSidebar side="right" mode="drawer" :ui="{ root: 'border-l border-default', body: 'p-0' }">
       <div class="border-b border-default p-4">
         <h2 class="text-lg font-semibold text-highlighted">Blocks</h2>
       </div>
@@ -95,7 +94,6 @@ const handleToolClick = (toolName: string) => {
           </button>
         </li>
       </ul>
-    </UDashboardSidebar>
   <GenerateInlineCitation
     v-if="inlineCitationModal"
     :project-label="currentProjectLabel"

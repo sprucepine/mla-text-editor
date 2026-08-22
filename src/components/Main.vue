@@ -21,8 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <UDashboardGroup>
-    <UDashboardPanel>
+
       <main class="flex-1 overflow-y-auto">
         <section class="p-6">
           <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
@@ -77,7 +76,4 @@ onMounted(() => {
           </section>
         <Footer />
       </main>
-    </UDashboardPanel>
-    <Sidebar />
-  </UDashboardGroup>
 </template>

@@ -5,13 +5,22 @@
 </script>
 
 <template>
-    <UApp>
-      <RouterView />
-      <div class="flex h-screen flex-col bg-base-200 text-base-content">
-        <Navbar />
-        <Main />
 
-      </div>
+    <UApp>
+      <UDashboardGroup>
+        <UDashboardPanel>
+          <template #header>
+            <Navbar />
+          </template>
+          <template #body>
+            <Main />
+          </template>
+        </UDashboardPanel>
+        <UDashboardSidebar side="right" resizable :min-size="20" :max-size="50" :default-size="25" >
+          <Sidebar />
+        </UDashboardSidebar>
+      </UDashboardGroup>
+
     </UApp>
 </template>
 
