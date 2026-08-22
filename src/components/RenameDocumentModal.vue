@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import ModalView from '@/components/ModalView.vue'
 import { useDocumentStore } from '@/stores/documentStore'
-import Label from './Label.vue';
+import StatusLabel from './Label.vue'
 
 // Make sure to import your Icon component if not globally registered
 // import { Icon } from '@iconify/vue'
@@ -91,7 +91,7 @@ function saveDialog() {
       :class="doc.id === documentStore.activeDocumentId ? 'btn-primary' : 'btn-ghost'"
       @click="switchToDocument(doc.id)"
     >
-    <Label  :text="doc.fileTitle || doc.title || 'Untitled Document'" :icon="doc.fileIcon || 'mdi-file-document-outline'" />
+    <StatusLabel :text="doc.fileTitle || doc.title || 'Untitled Document'" :icon="doc.fileIcon || 'mdi-file-document-outline'" />
     </button>
   </div>
 

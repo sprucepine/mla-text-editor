@@ -70,36 +70,32 @@ const handleToolClick = (toolName: string) => {
 </script>
 
 <template>
-  <div class="drawer-side h-full min-h-0 z-10 overflow-hidden">
-    <label for="my-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
-
-    <aside class="flex h-full min-h-0 w-80 flex-col overflow-y-auto overflow-x-hidden border-l border-base-300 bg-base-100 text-base-content">
-      <div class="border-b border-base-300 p-4">
-        <h2 class="text-lg font-semibold">Blocks</h2>
+<UDashboardSidebar side="right" mode="drawer" :ui="{ root: 'border-l border-default', body: 'p-0' }">
+      <div class="border-b border-default p-4">
+        <h2 class="text-lg font-semibold text-highlighted">Blocks</h2>
       </div>
-      <ul class="menu w-full gap-1 p-4">
+      <ul class="flex w-full flex-col gap-1 p-4">
         <li v-for="block in blocks" :key="block.name" class="w-full">
-          <a class="block w-full rounded-xl" @click="handleBlockClick(block.name)">
+          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleBlockClick(block.name)">
             <BlockTemplate :title="block.name" :badge="block.badge" :icon="block.icon">
-              <p class="text-sm text-base-content/70">{{ block.description }}</p>
+              <p class="text-sm text-muted">{{ block.description }}</p>
             </BlockTemplate>
-          </a>
+          </button>
         </li>
       </ul>
-      <div class="border-b border-base-300 p-4">
-        <h2 class="text-lg font-semibold">Tools</h2>
+      <div class="border-b border-default p-4">
+        <h2 class="text-lg font-semibold text-highlighted">Tools</h2>
       </div>
-      <ul class="menu w-full gap-1 p-4">
+      <ul class="flex w-full flex-col gap-1 p-4">
         <li v-for="tool in tools" :key="tool.name" class="w-full">
-          <a class="block w-full rounded-xl" @click="handleToolClick(tool.name)">
+          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleToolClick(tool.name)">
             <BlockTemplate :title="tool.name" :badge="tool.badge" :icon="tool.icon">
-              <p class="text-sm text-base-content/70">{{ tool.description }}</p>
+              <p class="text-sm text-muted">{{ tool.description }}</p>
             </BlockTemplate>
-          </a>
+          </button>
         </li>
       </ul>
-    </aside>
-  </div>
+    </UDashboardSidebar>
   <GenerateInlineCitation
     v-if="inlineCitationModal"
     :project-label="currentProjectLabel"

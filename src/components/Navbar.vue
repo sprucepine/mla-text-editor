@@ -2,8 +2,9 @@
 import { ref } from 'vue'
 import { useDocumentStore } from '@/stores/documentStore'
 import RenameDocumentModal from '@/components/RenameDocumentModal.vue'
-import Label from './Label.vue'
-import { downloadMlaDocumentExport, exportMlaDocumentAsPdf } from '@/utils/exportMlaDocument'
+import StatusLabel from '@/components/Label.vue'
+import type { DropdownMenuItem } from '@nuxt/ui'
+import { exportMlaDocumentAsPdf } from '@/utils/exportMlaDocument'
 
 defineOptions({ name: 'AppNavbar' })
 
@@ -31,51 +32,77 @@ function closeRenameModal() {
   isRenameModalOpen.value = false
 }
 
+const documentNameOptions = ref<DropdownMenuItem[][]>([
+  [
+    {
+      label: 'Rename Document',
+      icon: 'mdi-pencil',
+      onSelect: openRenameModal
+    },
+    {
+      label: 'Delete Document',
+      icon: 'mdi-delete',
+      onSelect: () => {
+        if (documentStore.activeDocument) {
+          documentStore.deleteDocument(documentStore.activeDocument.id)
+        }
+      }
+    }
+  ]
+])
+
 function exportDocumentAsPdf() {
   if (!documentStore.activeDocument) return
 
   exportMlaDocumentAsPdf(documentStore.activeDocument)
 }
+
 </script>
 
 <template>
-  <header class="navbar w-full border-b border-base-300 bg-base-100 px-4 shadow-sm">
-    <div class="navbar-start">
-        <div class="text-lg font-semibold pr-4">MLA Text Editor</div>
-        <button v-if="documentStore.activeDocument" class="btn btn-sm btn-ghost" :disabled="!documentStore.activeDocument" @click="openRenameModal" title="Rename Document">
-          <Label :text="documentStore.activeDocument.fileTitle || 'Untitled Document'" :icon="documentStore.activeDocument.fileIcon || 'mdi-file-document-outline'" />
-          <iconify-icon icon="mdi-pencil" />
+  <UHeader title="MLA Text Editor">
+    <template #title>
+      <span>MLA Text Editor</span>
+      <UDropdownMenu :items="documentNameOptions" class="ml-4">
+        <button class="btn btn-sm btn-ghost" title="Document Options">
+          <iconify-icon :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'" />
+          <span class="ml-2">{{ documentStore.activeDocument?.fileTitle || 'Untitled Document' }}</span>
+          <iconify-icon icon="mdi-chevron-down" class="ml-1" />
         </button>
-        <!-- Document Saving Information-->
-        <div v-if="documentStore.activeDocument" class="text-sm text-muted-foreground">
-          <div v-if="documentStore.saveState === 'saved'">
-            <Label :text="'Saved'" :icon="'mdi-check-circle-outline'" />
+      </UDropdownMenu>
+      <div v-if="documentStore.activeDocument" class="flex items-center">
+         <div v-if="documentStore.saveState === 'saved'">
+          <UTooltip :text="'All changes saved'" :content="{ side: 'bottom' }">
+            <StatusLabel :text="'Saved'" :icon="'mdi-check-circle-outline'" />
+          </UTooltip>
           </div>
           <div v-else-if="documentStore.saveState === 'error'">
-            <Label :text="'Error saving changes'" :icon="'mdi-alert-circle-outline'" />
+            <UTooltip :text="'Error saving changes'" :content="{ side: 'bottom' }">
+              <StatusLabel :text="'Error saving changes'" :icon="'mdi-alert-circle-outline'" tone="error" />
+            </UTooltip>
           </div>
           <div v-else>
-            <Label :text="'Saving...'" :icon="'mdi-progress-clock'" />
+            <UTooltip :text="'Saving changes...'" :content="{ side: 'bottom' }">
+              <StatusLabel :text="'Saving...'" :icon="'mdi-progress-clock'" tone="info" />
+            </UTooltip>
           </div>
+      </div>
 
-        </div>
-    </div>
+    </template>
+    <template #right>
 
-    <div v-if="documentStore.activeDocument" class="navbar-end gap-2">
       <!-- <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
         <iconify-icon icon="mdi-download" />
         HTML
       </button> -->
-      <button class="btn btn-sm btn-primary" @click="exportDocumentAsPdf" title="Export MLA as PDF">
-        <iconify-icon icon="mdi-file-pdf-box" />
-        PDF
-      </button>
+      <UButton icon="mdi-file-pdf-box" label="Export to PDF" @click="exportDocumentAsPdf" title="Export MLA as PDF" />
+      <!--
         <label for="my-sidebar" class="btn btn-sm btn-ghost lg:hidden mr-2" aria-label="Open sidebar" title="Open Sidebar">
           <iconify-icon icon="lucide:panel-right-open" />
         </label>
-    </div>
-  </header>
-
+    </div> -->
+    </template>
+  </UHeader>
   <RenameDocumentModal
     v-if="isRenameModalOpen"
     :initial-title="documentStore.activeDocument?.fileTitle || ''"
