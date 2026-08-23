@@ -2,19 +2,12 @@
 @plugin "daisyui";
 @import '@nuxt/ui';
 
+
+/* Source: https://github.com/nuxt/ui/issues/2332#issuecomment-2622667764 */
 @layer base {
-  html,
-  body,
-  #app {
-    height: 100%;
-    margin: 0;
-  }
-
-  body {
-    overflow: hidden;
-  }
-
-  :root {
-    color-scheme: light;
-  }
+   button,
+   [role="button"] {
+      @apply cursor-pointer;
+      @apply disabled:cursor-not-allowed;
+   }
 }
