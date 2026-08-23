@@ -5,9 +5,8 @@
 </script>
 
 <template>
-
-    <UApp>
-      <UDashboardGroup>
+  <UApp :tooltip="{ delayDuration: 0 }">
+    <UDashboardGroup>
         <UDashboardPanel :ui="{ body: 'p-0' }">
           <template #header>
             <Navbar />
