@@ -60,7 +60,16 @@ function exportDocumentAsPdf() {
 </script>
 
 <template>
-  <UHeader title="MLA Text Editor">
+  <UHeader title="MLA Text Editor" toggle-side="right">
+    <template #toggle>
+      <UDashboardSidebarToggle
+        class="lg:hidden"
+        side="right"
+        aria-label="Open sidebar"
+        title="Open sidebar"
+        icon="lucide:panel-right-open"
+      />
+    </template>
     <template #title>
       <span>MLA Text Editor</span>
       <UTooltip text="Edit Document Details" :content="{ side: 'bottom' }" arrow>
@@ -94,17 +103,11 @@ function exportDocumentAsPdf() {
 
     </template>
     <template #right>
-
       <!-- <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
         <iconify-icon icon="mdi-download" />
         HTML
       </button> -->
       <UButton icon="mdi-file-pdf-box" label="Export to PDF" @click="exportDocumentAsPdf" title="Export MLA as PDF" />
-      <!--
-        <label for="my-sidebar" class="btn btn-sm btn-ghost lg:hidden mr-2" aria-label="Open sidebar" title="Open Sidebar">
-          <iconify-icon icon="lucide:panel-right-open" />
-        </label>
-    </div> -->
     </template>
   </UHeader>
   <RenameDocumentModal

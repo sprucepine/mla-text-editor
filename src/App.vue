@@ -15,7 +15,7 @@
             <Main />
           </template>
         </UDashboardPanel>
-        <UDashboardSidebar variant="floating" side="right" resizable :min-size="20" :max-size="50" :default-size="25" >
+        <UDashboardSidebar variant="floating" side="right" :toggle="false" resizable :min-size="20" :max-size="50" :default-size="25" >
           <Sidebar />
         </UDashboardSidebar>
       </UDashboardGroup>
