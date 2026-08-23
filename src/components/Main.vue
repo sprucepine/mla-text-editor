@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Sidebar from "@/components/Sidebar.vue"
 import { useDocumentStore } from "@/stores/documentStore";
 import { onMounted } from 'vue';
 import Card from "@/components/Card.vue";
@@ -21,9 +20,8 @@ onMounted(() => {
 </script>
 
 <template>
-
-      <main class="flex-1 overflow-y-auto">
-        <section class="p-6">
+      <main class="flex-1">
+        <section class="">
           <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
               <div>
                 <h1 class="text-3xl font-semibold tracking-tight">
