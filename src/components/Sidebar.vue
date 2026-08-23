@@ -34,8 +34,6 @@ const tools = [
 
 ]
 
-import BlockTemplate from "@/components/BlockTemplate.vue";
-
 const handleBlockClick = (blockName: string) => {
   if (!useDocumentStoreInstance.activeDocument) {
     useDocumentStoreInstance.createNewDocument();
@@ -73,24 +71,24 @@ const handleToolClick = (toolName: string) => {
       <div class="border-b border-default p-4">
         <h2 class="text-lg font-semibold text-highlighted">Blocks</h2>
       </div>
-      <ul class="flex w-full flex-col gap-1 p-4">
+      <ul class="flex w-full flex-col gap-1">
         <li v-for="block in blocks" :key="block.name" class="w-full">
-          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleBlockClick(block.name)">
-            <BlockTemplate :title="block.name" :badge="block.badge" :icon="block.icon">
+          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleBlockClick(block.name)" style="cursor: pointer">
+            <UPageCard :title="block.name" :badge="block.badge" :icon="block.icon">
               <p class="text-sm text-muted">{{ block.description }}</p>
-            </BlockTemplate>
+            </UPageCard>
           </button>
         </li>
       </ul>
       <div class="border-b border-default p-4">
         <h2 class="text-lg font-semibold text-highlighted">Tools</h2>
       </div>
-      <ul class="flex w-full flex-col gap-1 p-4">
+      <ul class="flex w-full flex-col gap-1">
         <li v-for="tool in tools" :key="tool.name" class="w-full">
-          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleToolClick(tool.name)">
-            <BlockTemplate :title="tool.name" :badge="tool.badge" :icon="tool.icon">
+          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleToolClick(tool.name)" style="cursor: pointer">
+            <UPageCard :title="tool.name" :badge="tool.badge" :icon="tool.icon">
               <p class="text-sm text-muted">{{ tool.description }}</p>
-            </BlockTemplate>
+            </UPageCard>
           </button>
         </li>
       </ul>
