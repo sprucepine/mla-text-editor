@@ -63,15 +63,13 @@ function exportDocumentAsPdf() {
   <UHeader title="MLA Text Editor">
     <template #title>
       <span>MLA Text Editor</span>
-      <UTooltip :text="'Edit Document Details'" :content="{ side: 'bottom' }">
       <UDropdownMenu :items="documentNameOptions" class="ml-4">
-        <UButton variant="ghost" size="sm" color="neutral">
-          <iconify-icon :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'" />
-          <span class="ml-2">{{ documentStore.activeDocument?.fileTitle || 'Untitled Document' }}</span>
-          <iconify-icon icon="mdi-chevron-down" class="ml-1" />
-        </UButton>
+          <UButton variant="ghost" size="sm" color="neutral">
+            <iconify-icon :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'" />
+            <span class="ml-2">{{ documentStore.activeDocument?.fileTitle || 'Untitled Document' }}</span>
+            <iconify-icon icon="mdi-chevron-down" class="ml-1" />
+          </UButton>
       </UDropdownMenu>
-      </UTooltip>
       <div v-if="documentStore.activeDocument" class="flex items-center">
          <div v-if="documentStore.saveState === 'saved'">
           <UTooltip :text="'All changes saved'" :content="{ side: 'bottom' }">
