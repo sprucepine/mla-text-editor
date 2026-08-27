@@ -2,11 +2,52 @@ import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CitationType, DocumentType, SaveState } from '@/types/types'
 import type { DocumentItem, Citation } from '@/types/types'
+import { get, set } from 'idb-keyval'
+
+const STORAGE_KEY = 'mla-document-store'
+
+interface StoredDocumentState {
+  documents: Record<string, DocumentItem>
+  activeDocumentId: string | null
+}
 
 export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
   const activeDocumentId = ref<string | null>(null)
   const saveState = ref<SaveState>(SaveState.Idle)
+
+  async function hydrateStore() {
+    const storedState = await get<StoredDocumentState>(STORAGE_KEY)
+    if (storedState) {
+      documents.value = storedState.documents || {}
+      activeDocumentId.value = storedState.activeDocumentId || null
+    }
+  }
+  async function persistStore() {
+    const stateToStore: StoredDocumentState = {
+      documents: documents.value,
+      activeDocumentId: activeDocumentId.value
+    }
+    await set(STORAGE_KEY, stateToStore)
+  }
+
+  watch (
+    [documents, activeDocumentId],
+    async () => {
+      saveState.value = SaveState.Saving
+
+      try{
+        await persistStore()
+        saveState.value = SaveState.Saved
+      }
+      catch (error) {
+        console.error("Error saving document store:", error)
+        saveState.value = SaveState.Error
+      }
+    },
+    { deep: true }
+  )
+
 
   function buildNewDocument(id: string): DocumentItem {
     return {
@@ -149,6 +190,7 @@ export const useDocumentStore = defineStore('document', () => {
     currentProjectLabel,
     citations,
     saveState,
+    hydrateStore,
     createNewDocument,
     selectDocument,
     deleteDocument,
@@ -158,7 +200,4 @@ export const useDocumentStore = defineStore('document', () => {
     moveContentBlock,
     deleteContentBlock
   }
-},
-{
-  persist: true // pinia-plugin-persistedstate auto-saves everything safely
 })

@@ -23,6 +23,7 @@
     "@tiptap/suggestion": "^3.27.3",
     "@tiptap/vue-3": "^3.27.3",
     "iconify-icon": "^3.0.2",
+    "idb-keyval": "^6.3.0",
     "jspdf": "^4.2.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
