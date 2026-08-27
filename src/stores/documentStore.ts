@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed, toRaw, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CitationType, DocumentType, SaveState } from '@/types/types'
 import type { DocumentItem, Citation } from '@/types/types'
@@ -15,25 +15,38 @@ export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
   const activeDocumentId = ref<string | null>(null)
   const saveState = ref<SaveState>(SaveState.Idle)
+  let isHydrated = false
+  let pendingWrite = Promise.resolve()
 
   async function hydrateStore() {
-    const storedState = await get<StoredDocumentState>(STORAGE_KEY)
-    if (storedState) {
-      documents.value = storedState.documents || {}
-      activeDocumentId.value = storedState.activeDocumentId || null
+    try {
+      const storedState = await get<StoredDocumentState>(STORAGE_KEY)
+      if (storedState) {
+        documents.value = storedState.documents || {}
+        activeDocumentId.value = storedState.activeDocumentId || null
+      }
+    } catch (error) {
+      console.error('Error loading document store:', error)
+    } finally {
+      isHydrated = true
     }
   }
-  async function persistStore() {
+
+  function persistStore() {
     const stateToStore: StoredDocumentState = {
-      documents: documents.value,
+      documents: structuredClone(toRaw(documents.value)),
       activeDocumentId: activeDocumentId.value
     }
-    await set(STORAGE_KEY, stateToStore)
+
+    pendingWrite = pendingWrite.catch(() => undefined).then(() => set(STORAGE_KEY, stateToStore))
+    return pendingWrite
   }
 
   watch (
     [documents, activeDocumentId],
     async () => {
+      if (!isHydrated) return
+
       saveState.value = SaveState.Saving
 
       try{
