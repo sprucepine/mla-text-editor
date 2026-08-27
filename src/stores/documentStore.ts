@@ -2,11 +2,68 @@ import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CitationType, DocumentType, SaveState } from '@/types/types'
 import type { DocumentItem, Citation } from '@/types/types'
+import { get, set } from 'idb-keyval'
+
+const STORAGE_KEY = 'mla-document-store'
+
+interface StoredDocumentState {
+  documents: Record<string, DocumentItem>
+  activeDocumentId: string | null
+}
 
 export const useDocumentStore = defineStore('document', () => {
   const documents = ref<Record<string, DocumentItem>>({})
   const activeDocumentId = ref<string | null>(null)
   const saveState = ref<SaveState>(SaveState.Idle)
+
+  async function hydrateStore() {
+    const storedState = await get<StoredDocumentState>(STORAGE_KEY)
+    if (storedState) {
+      documents.value = storedState.documents || {}
+      activeDocumentId.value = storedState.activeDocumentId || null
+    }
+  }
+  async function persistStore() {
+    const stateToStore: StoredDocumentState = {
+      documents: documents.value,
+      activeDocumentId: activeDocumentId.value
+    }
+    await set(STORAGE_KEY, stateToStore)
+  }
+
+  watch (
+    [documents, activeDocumentId],
+    async () => {
+      saveState.value = SaveState.Saving
+
+      try{
+        await persistStore()
+        saveState.value = SaveState.Saved
+      }
+      catch (error) {
+        console.error("Error saving document store:", error)
+        saveState.value = SaveState.Error
+      }
+    },
+    { deep: true }
+  )
+
+
+  function buildNewDocument(id: string): DocumentItem {
+    return {
+      id,
+      fileTitle: "",
+      fileIcon: "",
+      headerName: "",
+      title: "",
+      name: "",
+      professor: "",
+      course: "",
+      dueDate: "",
+      content: [],
+      citations: []
+    }
+  }
 
   const activeDocument = computed(() => {
     if (!activeDocumentId.value) return null
@@ -21,23 +78,32 @@ export const useDocumentStore = defineStore('document', () => {
   })
 
   const citations = computed(() => activeDocument.value?.citations ?? [])
+  const documentList = computed(() => Object.values(documents.value))
 
   function createNewDocument() {
     const id = crypto.randomUUID()
-    documents.value[id] = {
-      id,
-      fileTitle: "",
-      fileIcon: "",
-      headerName: "",
-      title: "",
-      name: "",
-      professor: "",
-      course: "",
-      dueDate: "",
-      content: [],
-      citations: []
-    }
+    documents.value[id] = buildNewDocument(id)
     activeDocumentId.value = id
+  }
+
+  function selectDocument(id: string) {
+    if (!documents.value[id]) return false
+
+    activeDocumentId.value = id
+    return true
+  }
+
+  function deleteDocument(id: string) {
+    if (!documents.value[id]) return false
+
+    delete documents.value[id]
+
+    if (activeDocumentId.value === id) {
+      const remainingIds = Object.keys(documents.value)
+      activeDocumentId.value = remainingIds[0] ?? null
+    }
+
+    return true
   }
 
   function moveContentBlock(fromIndex: number, toIndex: number) {
@@ -120,17 +186,18 @@ export const useDocumentStore = defineStore('document', () => {
     documents,
     activeDocumentId,
     activeDocument,
+    documentList,
     currentProjectLabel,
     citations,
     saveState,
+    hydrateStore,
     createNewDocument,
+    selectDocument,
+    deleteDocument,
     addContentBlock,
     addCitation,
     deleteCitation,
     moveContentBlock,
     deleteContentBlock
   }
-},
-{
-  persist: true // pinia-plugin-persistedstate auto-saves everything safely
 })

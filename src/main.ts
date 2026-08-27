@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import './main.css'
 import router from './router'
 import 'iconify-icon'
+import { useDocumentStore } from './stores/documentStore.ts'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -13,6 +13,7 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 
-pinia.use(piniaPluginPersistedstate)
+const documentStore = useDocumentStore(pinia)
+await documentStore.hydrateStore() // Ensure the store is hydrated before mounting the app
 
 app.mount('#app')
