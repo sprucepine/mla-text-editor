@@ -212,7 +212,7 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
     <style>
       @page {
         size: letter;
-        margin: 1in;
+        margin: 0;
       }
 
       :root {
@@ -228,6 +228,10 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
         line-height: 2;
       }
 
+      p {
+        margin: 0;
+      }
+
       .paper {
         padding: 1in;
       }
@@ -238,12 +242,12 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
       }
 
       .heading {
-        margin-bottom: 1rem;
+        margin-bottom: 0;
       }
 
       .title {
         text-align: center;
-        margin: 0 0 1rem;
+        margin: 0;
         font-size: 12pt;
         font-weight: 400;
       }
@@ -262,12 +266,13 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
       }
 
       .works-cited {
-        margin-top: 1in;
+        break-before: page;
+        page-break-before: always;
       }
 
       .works-cited-title {
         text-align: center;
-        margin: 0 0 1rem;
+        margin: 0;
         font-weight: 400;
       }
 
@@ -370,10 +375,11 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
 
   function writeLines(lines: string[], options?: { align?: 'left' | 'center' | 'right' }): void {
     const align = options?.align ?? 'left'
+    const x = align === 'center' ? pageWidth / 2 : align === 'right' ? pageWidth - marginRight : marginLeft
 
     for (const line of lines) {
       addPageIfNeeded(lineHeight)
-      pdf.text(line, marginLeft, cursorY, { align })
+      pdf.text(line, x, cursorY, { align })
       cursorY += lineHeight
     }
   }
@@ -540,7 +546,6 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
   if (worksCitedEntries.length !== 0) {
     startNewPage()
     writeLines(['Works Cited'], { align: 'center' })
-    cursorY += lineHeight
 
     for (const citation of worksCitedEntries) {
       writeParagraph(citation, { hangingIndent: 36 })
