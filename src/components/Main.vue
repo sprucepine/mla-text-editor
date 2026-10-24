@@ -22,7 +22,7 @@ onMounted(() => {
 <template>
       <main class="flex-1">
         <section class="">
-          <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
+          <section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
               <div>
                 <h1 class="text-3xl font-semibold tracking-tight">
                   {{ documentStore.activeDocument?.fileTitle || "Untitled Document" }}
@@ -72,6 +72,6 @@ onMounted(() => {
               </template>
             </section>
           </section>
-        <Footer />
       </main>
+      <Footer />
 </template>
