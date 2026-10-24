@@ -15,6 +15,8 @@ const selectedCitation = ref<Citation | null>(null);
 const copiedRegular = ref(false);
 const copiedInline = ref(false);
 
+const toast = useToast();
+
 const documentStore = useDocumentStore();
 const currentCitationsCount = computed(() => documentStore.citations.length);
 
@@ -24,6 +26,12 @@ function deleteCitation(citationId: string) {
     selectedCitation.value = null;
     showingCitationDetails.value = false;
   }
+  toast.add({
+    title: 'Citation deleted',
+    icon: 'mdi-check-circle',
+    duration: 1500,
+    progress: false,
+  });
 }
 
 const citationFields = computed(() => {
@@ -84,8 +92,21 @@ async function copyGeneratedCitation() {
     window.setTimeout(() => {
       copiedRegular.value = false;
     }, 1500);
+    toast.add({
+      title: 'Copied to clipboard',
+      icon: 'mdi-check-circle',
+      duration: 1500,
+      progress: false,
+    });
   } catch {
     copiedRegular.value = false;
+    toast.add({
+      title: 'Copy failed',
+      icon: 'mdi-alert-circle',
+      description: 'Failed to copy the citation to clipboard. Please try again.',
+      duration: 1500,
+      progress: false,
+    });
   }
 }
 
@@ -107,6 +128,12 @@ async function copyGeneratedInlineCitation() {
     }, 1500);
   } catch {
     copiedInline.value = false;
+    toast.add({
+      title: 'Copy failed',
+      icon: 'mdi-alert-circle',
+      duration: 1500,
+      progress: false,
+    });
   }
 }
 </script>
