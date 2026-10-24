@@ -1,11 +1,40 @@
 <script setup lang="ts">
 import { useDocumentStore } from "@/stores/documentStore";
 import { onMounted } from 'vue';
+import type { DropdownMenuItem } from '@nuxt/ui';
 import Card from "@/components/Card.vue";
 import BlockEditor from "@/components/BlockEditor.vue"; // Imported your separate editor
 import Footer from "@/components/Footer.vue"; // Import Footer component
 
 const documentStore = useDocumentStore();
+
+function getContentBlockMenuItems(index: number): DropdownMenuItem[][] {
+    const items: DropdownMenuItem[] = [
+        {
+            label: 'Delete Paragraph',
+            icon: 'mdi-delete',
+            onSelect: () => documentStore.deleteContentBlock(index)
+        }
+    ];
+
+    if (index > 0) {
+        items.push({
+            label: 'Move Up',
+            icon: 'mdi-arrow-up',
+            onSelect: () => documentStore.moveContentBlock(index, index - 1)
+        });
+    }
+
+    if (documentStore.activeDocument && index < documentStore.activeDocument.content.length - 1) {
+        items.push({
+            label: 'Move Down',
+            icon: 'mdi-arrow-down',
+            onSelect: () => documentStore.moveContentBlock(index, index + 1)
+        });
+    }
+
+    return [items];
+}
 
 // On load, make sure there is an active document to type into
 onMounted(() => {
@@ -60,15 +89,38 @@ onMounted(() => {
                           <UInput v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="w-full mb-4" />
                       </label>
                     </UCard>
-
-                  <UCard v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
-
+                  <UContextMenu v-for="(block, index) in documentStore.activeDocument.content" :key="index" :items="getContentBlockMenuItems(index)">
+                  <UCard :title="'Paragraph'" :icon="'boxicons:paragraph'">
+                    <template #header>
+                      <div class="flex items-center gap-2">
+                        <iconify-icon icon="boxicons:paragraph" class="text-xl" />
+                        <h6 class="text-lg font-semibold text-base-content">Paragraph {{ index + 1 }}</h6>
+                      <UDropdownMenu :items="getContentBlockMenuItems(index)">
+                          <UButton variant="ghost" class="ml-auto" aria-label="Paragraph actions">
+                            <iconify-icon icon="mdi:dots-vertical" class="text-lg" />
+                          </UButton>
+                      </UDropdownMenu>
+                      </div>
+                    </template>
+                    <template #default>
                       <BlockEditor v-model="documentStore.activeDocument.content[index]!" />
-
-                      <UButton class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph"><iconify-icon icon="mdi-delete" /></UButton>
-                      <UButton v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up"><iconify-icon icon="mdi-arrow-up" /></UButton>
-                      <UButton v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></UButton>
+                      </template>
+                    <template #footer>
+                      <UButton class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph" variant="ghost">
+                        <iconify-icon icon="mdi-delete" />
+                        Delete
+                      </UButton>
+                      <UButton v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up" variant="ghost">
+                        <iconify-icon icon="mdi-arrow-up" />
+                        Move Up
+                      </UButton>
+                      <UButton v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down" variant="ghost">
+                        <iconify-icon icon="mdi-arrow-down" />
+                        Move Down
+                      </UButton>
+                    </template>
                   </UCard>
+                  </UContextMenu>
               </template>
             </section>
           </section>
