@@ -29,46 +29,46 @@ onMounted(() => {
                 </h1>
               </div>
               <template v-if="documentStore.activeDocument">
-                  <Card v-if="documentStore.activeDocument" title="Header Information">
+                  <UCard v-if="documentStore.activeDocument" title="Header Information">
                       <p class="pb-4">The header in MLA format is displayed at the top right of your paper. It should include your last name and an auto-generated page number.</p>
                       <label class="floating-label">
                           <span class="label-text">Header Name</span>
-                          <input v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="w-full mb-4" />
                       </label>
-                  </Card>
+                    </UCard>
 
-                  <Card v-if="documentStore.activeDocument" title="Heading Information">
+                  <UCard v-if="documentStore.activeDocument" title="Heading Information">
                       <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>
                         <label class="floating-label">
                           <span class="label-text">Document Title</span>
-                          <input v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="w-full mb-4" />
                       </label>
                         <label class="floating-label">
                           <span class="label-text">Your Name</span>
-                          <input v-model="documentStore.activeDocument.name" type="text" placeholder="Your Name" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.name" type="text" placeholder="Your Name" class="w-full mb-4" />
                       </label>
                       <label class="floating-label">
                           <span class="label-text">Professor's Name</span>
-                          <input v-model="documentStore.activeDocument.professor" type="text" placeholder="Professor's Name" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.professor" type="text" placeholder="Professor's Name" class="w-full mb-4" />
                       </label>
                       <label class="floating-label">
                           <span class="label-text">Course Name</span>
-                          <input v-model="documentStore.activeDocument.course" type="text" placeholder="Course Name" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.course" type="text" placeholder="Course Name" class="w-full mb-4" />
                       </label>
                       <label class="floating-label">
                           <span class="label-text">Due Date</span>
-                          <input v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="input input-bordered w-full mb-4" />
+                          <UInput v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="w-full mb-4" />
                       </label>
-                  </Card>
+                    </UCard>
 
-                  <Card v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
+                  <UCard v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
 
                       <BlockEditor v-model="documentStore.activeDocument.content[index]!" />
 
-                      <button class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph"><iconify-icon icon="mdi-delete" /></button>
-                      <button v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up"><iconify-icon icon="mdi-arrow-up" /></button>
-                      <button v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></button>
-                  </Card>
+                      <UButton class="btn btn-sm btn-ghost mt-2" @click="documentStore.deleteContentBlock(index)" title="Delete Paragraph"><iconify-icon icon="mdi-delete" /></UButton>
+                      <UButton v-if="index > 0" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index - 1)" title="Move Up"><iconify-icon icon="mdi-arrow-up" /></UButton>
+                      <UButton v-if="index < documentStore.activeDocument.content.length - 1" class="btn btn-sm btn-ghost mt-2 ml-2" @click="documentStore.moveContentBlock(index, index + 1)" title="Move Down"><iconify-icon icon="mdi-arrow-down" /></UButton>
+                  </UCard>
               </template>
             </section>
           </section>
