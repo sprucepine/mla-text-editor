@@ -88,8 +88,7 @@ onMounted(() => {
                           <UInput v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="w-full mb-4" />
                       </label>
                     </UCard>
-                  <UContextMenu v-for="(block, index) in documentStore.activeDocument.content" :key="index" :items="getContentBlockMenuItems(index)">
-                  <UCard :title="'Paragraph'" :icon="'boxicons:paragraph'">
+                  <UCard v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
                     <template #header>
                       <div class="flex items-center gap-2">
                         <iconify-icon icon="boxicons:paragraph" class="text-xl" />
@@ -119,7 +118,6 @@ onMounted(() => {
                       </UButton>
                     </template>
                   </UCard>
-                  </UContextMenu>
               </template>
             </section>
           </section>
