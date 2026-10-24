@@ -170,15 +170,14 @@ async function copyGeneratedInlineCitation() {
       </div>
       <!-- Show list of citations -->
       <div v-else-if="documentStore.citations.length === 0">
-        <button class="btn btn-lg btn-circle btn-ghost absolute right-2 top-2" @click="handleClose">✕</button>
+        <UButton @click="() => openCitationDetails()" icon="mdi-plus" variant="outline" class="btn-sm">Add New Citation</UButton>
         <p class="py-2 text-sm text-base-content/70">
           No citations have been added yet. Click the button below to add a new citation for the currently selected text in the editor.
         </p>
-        <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Add New Citation</button>
       </div>
       <!-- Show list of citations -->
       <div v-else>
-        <button class="btn btn-sm btn-outline btn-primary" @click="() => openCitationDetails()">Add New Citation</button>
+        <UButton @click="() => openCitationDetails()" icon="mdi-plus" variant="outline" class="btn-sm">Add New Citation</UButton>
         <p class="py-2 text-sm text-base-content/70">
           Total citations: <span class="font-semibold">{{ currentCitationsCount }}</span>
         </p>

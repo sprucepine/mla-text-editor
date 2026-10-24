@@ -84,6 +84,7 @@ const handleBlockClick = (blockName: string) => {
     :project-label="currentProjectLabel"
     @close="closeInlineCitationModal"
     @generate="handleGenerateCitation"
+    class="pt-4"
   />
   </template>
   </UTabs>
