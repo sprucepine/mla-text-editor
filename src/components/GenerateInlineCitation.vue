@@ -163,7 +163,7 @@ async function copyGeneratedInlineCitation() {
             />
           </div>
 
-          <UPageCard class="w-full h-full bg-base-100">
+          <UCard class="w-full h-full bg-base-100">
 
             <p class="text-sm font-semibold">Regular citation (Works Cited)</p>
             <p class="mt-2 text-sm text-base-content/70">{{ generatedCitationText || 'Fill in the required fields to generate a copy-ready MLA citation.' }}</p>
@@ -176,7 +176,7 @@ async function copyGeneratedInlineCitation() {
             <UButton  :disabled="!generatedInlineCitationText" :icon="copiedInline ? 'mdi-check' : 'mdi-content-copy'" variant="outline" @click="copyGeneratedInlineCitation">
               {{ copiedInline ? 'Copied!' : 'Copy inline citation' }}
             </UButton>
-          </UPageCard>
+          </UCard>
         </div>
 
       </div>
