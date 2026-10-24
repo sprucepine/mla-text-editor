@@ -2,7 +2,6 @@
 import { useDocumentStore } from "@/stores/documentStore";
 import { onMounted } from 'vue';
 import type { DropdownMenuItem } from '@nuxt/ui';
-import Card from "@/components/Card.vue";
 import BlockEditor from "@/components/BlockEditor.vue"; // Imported your separate editor
 import Footer from "@/components/Footer.vue"; // Import Footer component
 
@@ -50,7 +49,7 @@ onMounted(() => {
 
 <template>
       <main class="flex-1">
-        <section class="">
+        <section class="w-full px-4 sm:px-6">
           <section class="mx-auto flex w-full max-w-5xl flex-col gap-6">
               <div>
                 <h1 class="text-3xl font-semibold tracking-tight">
