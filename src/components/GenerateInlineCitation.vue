@@ -148,41 +148,35 @@ async function copyGeneratedInlineCitation() {
         <div v-if="selectedCitation" class="space-y-3">
           <label class="form-control w-full">
             <span class="label-text">Citation type</span>
-            <select v-model="selectedCitation.type" class="select select-bordered w-full">
-
-              <option :value="CitationType.Book">Book</option>
-              <option :value="CitationType.Article">Article</option>
-              <option :value="CitationType.Website">Website</option>
-              <option :value="CitationType.Video">Video</option>
-              <option :value="CitationType.Other">Other</option>
-            </select>
+            <USelect v-model="selectedCitation.type" :items="Object.values(CitationType)" class="w-full"/>
           </label>
 
           <div v-for="field in citationFields" :key="field.key" class="form-control w-full">
             <label class="label px-0 py-1">
               <span class="label-text">{{ field.label }}</span>
             </label>
-            <input
+            <UInput
               :value="selectedCitation[field.key] ?? ''"
               :placeholder="field.placeholder"
-              class="input input-bordered w-full"
+              class="w-full"
               @input="updateCitationField(field.key, ($event.target as HTMLInputElement).value)"
             />
           </div>
 
-          <div class="rounded-box border border-base-300 bg-base-100 p-3">
+          <UPageCard class="w-full h-full bg-base-100">
+
             <p class="text-sm font-semibold">Regular citation (Works Cited)</p>
             <p class="mt-2 text-sm text-base-content/70">{{ generatedCitationText || 'Fill in the required fields to generate a copy-ready MLA citation.' }}</p>
-            <button class="btn btn-sm btn-outline btn-primary mt-3" :disabled="!generatedCitationText" @click="copyGeneratedCitation">
+            <UButton :disabled="!generatedCitationText" :icon="copiedRegular ? 'mdi-check' : 'mdi-content-copy'" variant="outline" @click="copyGeneratedCitation">
               {{ copiedRegular ? 'Copied!' : 'Copy regular citation' }}
-            </button>
+            </UButton>
 
             <p class="mt-4 text-sm font-semibold">Inline citation (in-text)</p>
             <p class="mt-2 text-sm text-base-content/70">{{ generatedInlineCitationText || 'Add author/title and optional page number to generate an inline citation.' }}</p>
-            <button class="btn btn-sm btn-outline btn-primary mt-3" :disabled="!generatedInlineCitationText" @click="copyGeneratedInlineCitation">
+            <UButton  :disabled="!generatedInlineCitationText" :icon="copiedInline ? 'mdi-check' : 'mdi-content-copy'" variant="outline" @click="copyGeneratedInlineCitation">
               {{ copiedInline ? 'Copied!' : 'Copy inline citation' }}
-            </button>
-          </div>
+            </UButton>
+          </UPageCard>
         </div>
 
       </div>
