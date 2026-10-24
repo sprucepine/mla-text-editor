@@ -74,7 +74,7 @@ function exportDocumentAsPdf() {
       <span>MLA Text Editor</span>
       <UTooltip text="Edit Document Details" :content="{ side: 'bottom' }" arrow>
         <span class="ml-4 inline-flex">
-          <UModal :is-open="isRenameModalOpen" @close="closeRenameModal">
+          <UModal :is-open="isRenameModalOpen" @close="closeRenameModal" title="Edit Document Details">
             <button class="btn btn-sm btn-ghost" @click="openRenameModal" title="Edit Document Details">
               <iconify-icon icon="mdi-pencil-outline" />
             </button>
