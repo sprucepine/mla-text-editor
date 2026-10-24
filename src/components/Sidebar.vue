@@ -21,17 +21,17 @@ function handleGenerateCitation() {
   closeInlineCitationModal();
 }
 
+const tabs = [
+  { name: 'Blocks', label: 'Blocks', icon: 'mdi-cube-outline', slot: 'blocks' },
+  { name: 'Citations', label: 'Citations', icon: 'mdi-format-quote-open', slot: 'citations' },
+];
+
 const blocks = [
   { name: 'Paragraph Block', badge: '', icon: 'boxicons:paragraph', description: 'A block for writing paragraphs of text.' },
   // { name: 'Image Block', badge: '', icon: 'boxicons:image', description: 'A block for inserting images.' },
   // { name: 'Heading Block', badge: '', icon: 'codex:h1', description: 'A block for creating headings.' },
   // { name: 'Table Block', badge: '', icon: 'boxicons:table', description: 'A block for creating tables.' },
   // { name: 'Code Block', badge: '', icon: 'boxicons:code', description: 'A block for writing code.' },
-]
-
-const tools = [
-  { name: 'Citation Maker', badge: '', icon: 'f7:quote-bubble', description: 'Generate regular and inline citations for your content.' },
-
 ]
 
 const handleBlockClick = (blockName: string) => {
@@ -57,17 +57,12 @@ const handleBlockClick = (blockName: string) => {
     //   break;
   }
 };
-const handleToolClick = (toolName: string) => {
-  switch (toolName) {
-    case 'Citation Maker':
-      openInlineCitationModal();
-      break;
-  }
-};
 
 </script>
 
 <template>
+  <UTabs :items="tabs" class="w-full">
+    <template #blocks>
       <div class="border-b border-default p-4">
         <h2 class="text-lg font-semibold text-highlighted">Blocks</h2>
       </div>
@@ -80,22 +75,16 @@ const handleToolClick = (toolName: string) => {
           </button>
         </li>
       </ul>
+      </template>
+      <template #citations>
       <div class="border-b border-default p-4">
-        <h2 class="text-lg font-semibold text-highlighted">Tools</h2>
+        <h2 class="text-lg font-semibold text-highlighted">Citations</h2>
       </div>
-      <ul class="flex w-full flex-col gap-1">
-        <li v-for="tool in tools" :key="tool.name" class="w-full">
-          <button class="block w-full rounded-md p-2 text-left hover:bg-elevated" @click="handleToolClick(tool.name)" style="cursor: pointer">
-            <UPageCard :title="tool.name" :badge="tool.badge" :icon="tool.icon">
-              <p class="text-sm text-muted">{{ tool.description }}</p>
-            </UPageCard>
-          </button>
-        </li>
-      </ul>
   <GenerateInlineCitation
-    v-if="inlineCitationModal"
     :project-label="currentProjectLabel"
     @close="closeInlineCitationModal"
     @generate="handleGenerateCitation"
   />
+  </template>
+  </UTabs>
 </template>

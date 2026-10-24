@@ -12,7 +12,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'close'): void
   (event: 'generate'): void
 }>();
 
@@ -55,10 +54,6 @@ const generatedInlineCitationText = computed(() => {
 
   return buildMlaInlineCitation(selectedCitation.value);
 });
-
-function handleClose() {
-  emit('close');
-}
 
 function handleGenerate() {
   emit('generate');
@@ -126,9 +121,9 @@ async function copyGeneratedInlineCitation() {
 </script>
 
 <template>
-  <ModalView :title="'Citation Maker'" @close="handleClose">
     <!-- Add new citation -->
       <div v-if="showingCitationDetails">
+        <UButton @click="showingCitationDetails = false" icon="mdi-arrow-left" variant="ghost" title="Back to Citations Homepage">Citations Homepage</UButton>
         <p class="py-2 text-sm text-base-content/70">
           Only the fields required for the selected citation type are shown below.
         </p>
@@ -172,7 +167,6 @@ async function copyGeneratedInlineCitation() {
           </div>
         </div>
 
-        <button class="btn btn-sm btn-outline btn-primary mt-4" @click="showingCitationDetails = false">Back</button>
       </div>
       <!-- Show list of citations -->
       <div v-else-if="documentStore.citations.length === 0">
@@ -205,5 +199,4 @@ async function copyGeneratedInlineCitation() {
           <button class="btn btn-sm btn-outline btn-error ml-2" @click="deleteCitation(block.id)">Delete</button>
         </Card>
       </div>
-    </ModalView>
 </template>
