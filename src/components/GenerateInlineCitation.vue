@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useDocumentStore } from '@/stores/documentStore';
-import Card from '@/components/Card.vue';
 import { buildMlaCitation, buildMlaInlineCitation, getRequiredMlaFields } from '@/utils/mlaCitationGenerator';
 import { CitationType } from '@/types/types';
 import type { Citation } from '@/types/types';
-import ModalView from '@/components/ModalView.vue';
 
 const props = defineProps<{
   projectLabel: string;
 }>();
 
-const emit = defineEmits<{
-  (event: 'generate'): void
-}>();
 
 const showingCitationDetails = ref(false);
 const selectedCitation = ref<Citation | null>(null);
@@ -54,10 +49,6 @@ const generatedInlineCitationText = computed(() => {
 
   return buildMlaInlineCitation(selectedCitation.value);
 });
-
-function handleGenerate() {
-  emit('generate');
-}
 
 function openCitationDetails(citation: Citation | null = null) {
   selectedCitation.value = citation ?? documentStore.addCitation(props.projectLabel, CitationType.Book);
@@ -181,12 +172,11 @@ async function copyGeneratedInlineCitation() {
         <p class="py-2 text-sm text-base-content/70">
           Total citations: <span class="font-semibold">{{ currentCitationsCount }}</span>
         </p>
-        <Card
+        <UPageCard
           v-for="block in documentStore.citations"
           :key="block.id"
           :title="block.title || block.author || block.name || 'Draft citation'"
           icon="mdi:book-open-page-variant"
-          badge="MLA"
         >
           <p class="py-2 text-sm text-base-content/70">
             {{ buildMlaCitation(block) || 'No MLA citation generated yet.' }}
@@ -196,6 +186,6 @@ async function copyGeneratedInlineCitation() {
           </p>
           <button class="btn btn-sm btn-outline btn-primary" @click="openCitationDetails(block)">View Details</button>
           <button class="btn btn-sm btn-outline btn-error ml-2" @click="deleteCitation(block.id)">Delete</button>
-        </Card>
+        </UPageCard>
       </div>
 </template>
