@@ -36,7 +36,7 @@ const documentNameOptions = ref<DropdownMenuItem[][]>([
   [
     {
       label: 'Rename Document',
-      icon: 'mdi-pencil',
+      icon: 'mdi-pencil-outline',
       onSelect: openRenameModal
     },
     {
@@ -74,6 +74,19 @@ function exportDocumentAsPdf() {
       <span>MLA Text Editor</span>
       <UTooltip text="Edit Document Details" :content="{ side: 'bottom' }" arrow>
         <span class="ml-4 inline-flex">
+          <UModal :is-open="isRenameModalOpen" @close="closeRenameModal">
+            <button class="btn btn-sm btn-ghost" @click="openRenameModal" title="Edit Document Details">
+              <iconify-icon icon="mdi-pencil-outline" />
+            </button>
+            <template #body>
+              <RenameDocumentModal
+                :initial-title="documentStore.activeDocument?.fileTitle || 'Untitled Document'"
+                :initial-icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
+                @save="saveTitle"
+                @close="closeRenameModal"
+              />
+            </template>
+          </UModal>
           <UDropdownMenu :items="documentNameOptions">
           <UButton variant="ghost" size="sm" color="neutral">
             <iconify-icon :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'" />
@@ -110,13 +123,6 @@ function exportDocumentAsPdf() {
       <UButton icon="mdi-file-pdf-box" label="Export to PDF" @click="exportDocumentAsPdf" title="Export MLA as PDF" />
     </template>
   </UHeader>
-  <RenameDocumentModal
-    v-if="isRenameModalOpen"
-    :initial-title="documentStore.activeDocument?.fileTitle || ''"
-    :initial-icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
-    @save="saveTitle"
-    @close="closeRenameModal"
-  />
 </template>
 
 <style scoped>

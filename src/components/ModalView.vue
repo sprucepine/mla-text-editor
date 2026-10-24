@@ -1,16 +1,11 @@
 <template>
-  <div class="modal modal-open" @click="handleBackdropClick">
-    <div class="modal-box" @click.stop>
       <h3 class="font-bold text-lg">{{ props.title }}</h3>
-      <button class="btn btn-lg btn-circle btn-ghost absolute right-2 top-2" type="button" @click="handleClose">✕</button>
       <p v-if="props.description" class="py-2 text-sm text-base-content/70">
         {{ props.description }}
       </p>
       <div :class="props.description ? 'mt-4' : ''">
         <slot />
       </div>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
