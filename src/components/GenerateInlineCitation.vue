@@ -177,6 +177,7 @@ async function copyGeneratedInlineCitation() {
           :key="block.id"
           :title="block.title || block.author || block.name || 'Draft citation'"
           icon="mdi:book-open-page-variant"
+          class="mt-4"
         >
           <p class="py-2 text-sm text-base-content/70">
             {{ buildMlaCitation(block) || 'No MLA citation generated yet.' }}
@@ -184,8 +185,10 @@ async function copyGeneratedInlineCitation() {
           <p class="pb-2 text-sm text-base-content/70">
             Inline: {{ buildMlaInlineCitation(block) || 'No inline citation generated yet.' }}
           </p>
-          <button class="btn btn-sm btn-outline btn-primary" @click="openCitationDetails(block)">View Details</button>
-          <button class="btn btn-sm btn-outline btn-error ml-2" @click="deleteCitation(block.id)">Delete</button>
+          <UFieldGroup class="mt-2">
+              <UButton @click="() => openCitationDetails(block)"  variant="outline" icon="mdi-pencil" title="Edit Citation">Edit</UButton>
+              <UButton @click="() => deleteCitation(block.id)" variant="outline" icon="mdi-delete" title="Delete Citation">Delete</UButton>
+          </UFieldGroup>
         </UPageCard>
       </div>
 </template>
