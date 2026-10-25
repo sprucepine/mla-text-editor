@@ -78,13 +78,15 @@ function exportDocumentAsPdf() {
             @close="closeRenameModal"
             title="Edit Document Details"
           >
-            <button
-              class="btn btn-sm btn-ghost"
-              @click="openRenameModal"
-              title="Edit Document Details"
-            >
-              <iconify-icon icon="mdi-pencil-outline" />
-            </button>
+            <UButton variant="ghost" size="sm" color="neutral">
+              <iconify-icon
+                :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
+              />
+              <span class="ml-2">{{
+                documentStore.activeDocument?.fileTitle || 'Untitled Document'
+              }}</span>
+              <iconify-icon icon="mdi-pencil-outline" class="ml-1" />
+            </UButton>
             <template #body>
               <RenameDocumentModal
                 :initial-title="documentStore.activeDocument?.fileTitle || 'Untitled Document'"
@@ -96,17 +98,6 @@ function exportDocumentAsPdf() {
               />
             </template>
           </UModal>
-          <UDropdownMenu :items="documentNameOptions">
-            <UButton variant="ghost" size="sm" color="neutral">
-              <iconify-icon
-                :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
-              />
-              <span class="ml-2">{{
-                documentStore.activeDocument?.fileTitle || 'Untitled Document'
-              }}</span>
-              <iconify-icon icon="mdi-chevron-down" class="ml-1" />
-            </UButton>
-          </UDropdownMenu>
         </span>
       </UTooltip>
       <div v-if="documentStore.activeDocument" class="flex items-center">
