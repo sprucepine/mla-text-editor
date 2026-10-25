@@ -162,7 +162,7 @@ onMounted(() => {
                 <iconify-icon icon="boxicons:paragraph" class="text-xl" />
                 <h6 class="text-lg font-semibold text-base-content">Paragraph {{ index + 1 }}</h6>
                 <UDropdownMenu :items="getContentBlockMenuItems(index)">
-                  <UButton variant="ghost" class="ml-auto" aria-label="Paragraph actions">
+                  <UButton variant="ghost" color="neutral" class="ml-auto" aria-label="Paragraph actions">
                     <iconify-icon icon="mdi:dots-vertical" class="text-lg" />
                   </UButton>
                 </UDropdownMenu>
