@@ -37,7 +37,7 @@ const documentNameOptions = ref<DropdownMenuItem[][]>([
     {
       label: 'Rename Document',
       icon: 'mdi-pencil-outline',
-      onSelect: openRenameModal
+      onSelect: openRenameModal,
     },
     {
       label: 'Delete Document',
@@ -46,9 +46,9 @@ const documentNameOptions = ref<DropdownMenuItem[][]>([
         if (documentStore.activeDocument) {
           documentStore.deleteDocument(documentStore.activeDocument.id)
         }
-      }
-    }
-  ]
+      },
+    },
+  ],
 ])
 
 function exportDocumentAsPdf() {
@@ -56,7 +56,6 @@ function exportDocumentAsPdf() {
 
   exportMlaDocumentAsPdf(documentStore.activeDocument)
 }
-
 </script>
 
 <template>
@@ -74,56 +73,77 @@ function exportDocumentAsPdf() {
       <span>MLA Text Editor</span>
       <UTooltip text="Edit Document Details" :content="{ side: 'bottom' }" arrow>
         <span class="ml-4 inline-flex">
-          <UModal :is-open="isRenameModalOpen" @close="closeRenameModal" title="Edit Document Details">
-            <button class="btn btn-sm btn-ghost" @click="openRenameModal" title="Edit Document Details">
+          <UModal
+            :is-open="isRenameModalOpen"
+            @close="closeRenameModal"
+            title="Edit Document Details"
+          >
+            <button
+              class="btn btn-sm btn-ghost"
+              @click="openRenameModal"
+              title="Edit Document Details"
+            >
               <iconify-icon icon="mdi-pencil-outline" />
             </button>
             <template #body>
               <RenameDocumentModal
                 :initial-title="documentStore.activeDocument?.fileTitle || 'Untitled Document'"
-                :initial-icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
+                :initial-icon="
+                  documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'
+                "
                 @save="saveTitle"
                 @close="closeRenameModal"
               />
             </template>
           </UModal>
           <UDropdownMenu :items="documentNameOptions">
-          <UButton variant="ghost" size="sm" color="neutral">
-            <iconify-icon :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'" />
-            <span class="ml-2">{{ documentStore.activeDocument?.fileTitle || 'Untitled Document' }}</span>
-            <iconify-icon icon="mdi-chevron-down" class="ml-1" />
-          </UButton>
+            <UButton variant="ghost" size="sm" color="neutral">
+              <iconify-icon
+                :icon="documentStore.activeDocument?.fileIcon || 'mdi-file-document-outline'"
+              />
+              <span class="ml-2">{{
+                documentStore.activeDocument?.fileTitle || 'Untitled Document'
+              }}</span>
+              <iconify-icon icon="mdi-chevron-down" class="ml-1" />
+            </UButton>
           </UDropdownMenu>
         </span>
       </UTooltip>
       <div v-if="documentStore.activeDocument" class="flex items-center">
-         <div v-if="documentStore.saveState === 'saved'">
+        <div v-if="documentStore.saveState === 'saved'">
           <UTooltip :text="'All changes saved'" :content="{ side: 'bottom' }" arrow>
             <StatusLabel :text="'Saved'" :icon="'mdi-check-circle-outline'" />
           </UTooltip>
-          </div>
-          <div v-else-if="documentStore.saveState === 'error'">
-            <UTooltip :text="'Error saving changes'" :content="{ side: 'bottom' }" arrow>
-              <StatusLabel :text="'Error saving changes'" :icon="'mdi-alert-circle-outline'" tone="error" />
-            </UTooltip>
-          </div>
-          <div v-else>
-            <UTooltip :text="'Saving changes...'" :content="{ side: 'bottom' }" arrow>
-              <StatusLabel :text="'Saving...'" :icon="'mdi-progress-clock'" tone="info" />
-            </UTooltip>
-          </div>
+        </div>
+        <div v-else-if="documentStore.saveState === 'error'">
+          <UTooltip :text="'Error saving changes'" :content="{ side: 'bottom' }" arrow>
+            <StatusLabel
+              :text="'Error saving changes'"
+              :icon="'mdi-alert-circle-outline'"
+              tone="error"
+            />
+          </UTooltip>
+        </div>
+        <div v-else>
+          <UTooltip :text="'Saving changes...'" :content="{ side: 'bottom' }" arrow>
+            <StatusLabel :text="'Saving...'" :icon="'mdi-progress-clock'" tone="info" />
+          </UTooltip>
+        </div>
       </div>
-
     </template>
     <template #right>
       <!-- <button class="btn btn-sm btn-outline btn-primary" @click="exportDocument" title="Export MLA as HTML">
         <iconify-icon icon="mdi-download" />
         HTML
       </button> -->
-      <UButton icon="mdi-file-pdf-box" label="Export to PDF" @click="exportDocumentAsPdf" title="Export MLA as PDF" />
+      <UButton
+        icon="mdi-file-pdf-box"
+        label="Export to PDF"
+        @click="exportDocumentAsPdf"
+        title="Export MLA as PDF"
+      />
     </template>
   </UHeader>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -59,7 +59,7 @@ const schoolIcons = [
   'lucide:music',
   'lucide:clapperboard',
   'lucide:brain',
-  'lucide:calendar'
+  'lucide:calendar',
 ]
 
 function selectIcon(iconName: string) {
@@ -79,38 +79,41 @@ function saveDialog() {
 <template>
   <ModalView :title="props.initialTitle" @close="closeDialog">
     <!-- Switch to another document -->
-<div class="mt-4">
-  <h4 class="text-sm font-semibold mb-2">Switch document</h4>
+    <div class="mt-4">
+      <h4 class="text-sm font-semibold mb-2">Switch document</h4>
 
-  <div class="flex flex-col gap-2 max-h-48 overflow-y-auto">
-    <button
-      v-for="doc in documentList"
-      :key="doc.id"
-      type="button"
-      class="btn btn-sm justify-between"
-      :class="doc.id === documentStore.activeDocumentId ? 'btn-primary' : 'btn-ghost'"
-      @click="switchToDocument(doc.id)"
-    >
-    <StatusLabel :text="doc.fileTitle || doc.title || 'Untitled Document'" :icon="doc.fileIcon || 'mdi-file-document-outline'" />
-    </button>
-  </div>
+      <div class="flex flex-col gap-2 max-h-48 overflow-y-auto">
+        <button
+          v-for="doc in documentList"
+          :key="doc.id"
+          type="button"
+          class="btn btn-sm justify-between"
+          :class="doc.id === documentStore.activeDocumentId ? 'btn-primary' : 'btn-ghost'"
+          @click="switchToDocument(doc.id)"
+        >
+          <StatusLabel
+            :text="doc.fileTitle || doc.title || 'Untitled Document'"
+            :icon="doc.fileIcon || 'mdi-file-document-outline'"
+          />
+        </button>
+      </div>
 
-  <div class="mt-3 flex gap-2">
-    <button class="btn btn-sm btn-outline" type="button" @click="makeNewDocument">
-      New
-    </button>
-    <button
-      v-if="documentStore.activeDocumentId"
-      class="btn btn-sm btn-error btn-outline"
-      type="button"
-      @click="removeDocument(documentStore.activeDocumentId)"
-    >
-      Delete Current
-    </button>
-  </div>
-</div>
+      <div class="mt-3 flex gap-2">
+        <button class="btn btn-sm btn-outline" type="button" @click="makeNewDocument">New</button>
+        <button
+          v-if="documentStore.activeDocumentId"
+          class="btn btn-sm btn-error btn-outline"
+          type="button"
+          @click="removeDocument(documentStore.activeDocumentId)"
+        >
+          Delete Current
+        </button>
+      </div>
+    </div>
     <h3 class="text-lg font-semibold">Change file title</h3>
-    <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
+    <p class="mt-2 text-sm text-base-content/70">
+      This title appears in the document header and app shell.
+    </p>
 
     <label class="floating-label mt-4">
       <span class="label-text">File title</span>
@@ -135,7 +138,9 @@ function saveDialog() {
     </label>
 
     <div class="mt-4">
-      <span class="text-xs font-medium text-base-content/60 block mb-2">Quick Select School Icon:</span>
+      <span class="text-xs font-medium text-base-content/60 block mb-2"
+        >Quick Select School Icon:</span
+      >
       <div class="grid grid-cols-6 gap-2 p-2 bg-base-200 rounded-lg">
         <button
           v-for="icon in schoolIcons"
@@ -149,7 +154,11 @@ function saveDialog() {
         </button>
       </div>
       <p class="text-xs text-base-content/60 mt-2">
-        Looking for more icons? You can visit <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary">Iconify</a> to find more icons.
+        Looking for more icons? You can visit
+        <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary"
+          >Iconify</a
+        >
+        to find more icons.
       </p>
     </div>
 
@@ -160,5 +169,4 @@ function saveDialog() {
   </ModalView>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

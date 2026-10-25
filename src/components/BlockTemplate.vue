@@ -15,19 +15,18 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps({
   icon: {
     type: String,
-    required: false
+    required: false,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   badge: {
     type: String,
-    required: false
-  }
-});
+    required: false,
+  },
+})
 </script>

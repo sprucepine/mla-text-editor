@@ -20,9 +20,9 @@
 
 /* Source: https://github.com/nuxt/ui/issues/2332#issuecomment-2622667764 */
 @layer base {
-   button,
-   [role="button"] {
-      @apply cursor-pointer;
-      @apply disabled:cursor-not-allowed;
-   }
+  button,
+  [role='button'] {
+    @apply cursor-pointer;
+    @apply disabled:cursor-not-allowed;
+  }
 }

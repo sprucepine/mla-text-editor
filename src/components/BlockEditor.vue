@@ -21,7 +21,7 @@ const emit = defineEmits<{
 const editor = useEditor({
   content: {
     type: 'doc',
-    content: props.modelValue.content
+    content: props.modelValue.content,
   },
   extensions: [StarterKit],
   onUpdate: ({ editor: currentEditor }) => {
@@ -29,7 +29,7 @@ const editor = useEditor({
     emit('update:modelValue', {
       ...props.modelValue,
       text: currentEditor.getText(),
-      content: json.content || []
+      content: json.content || [],
     })
   },
 })
@@ -42,11 +42,11 @@ watch(
     if (JSON.stringify(currentContent) !== JSON.stringify(newContent)) {
       editor.value.commands.setContent({
         type: 'doc',
-        content: newContent
+        content: newContent,
       })
     }
   },
-  { deep: true }
+  { deep: true },
 )
 
 onBeforeUnmount(() => {
@@ -61,7 +61,9 @@ onBeforeUnmount(() => {
   border-radius: 1rem;
   background: #ffffff;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
   overflow: hidden;
 }
 
