@@ -74,7 +74,7 @@ onMounted(() => {
                   />
                 </label>
               </div>
-              <figure class="flex shrink-0 flex-col items-end gap-2">
+              <figure class="flex shrink-0 flex-col items-center gap-2 md:items-end">
                 <div class="overflow-hidden rounded-md border border-default bg-muted shadow-sm">
                   <img
                     src="@/assets/header_preview.png"
@@ -139,7 +139,7 @@ onMounted(() => {
                   />
                 </label>
               </div>
-              <figure class="flex shrink-0 flex-col items-end gap-2">
+              <figure class="flex shrink-0 flex-col items-center gap-2 md:items-end">
                 <div class="overflow-hidden rounded-md border border-default bg-muted shadow-sm">
                   <img
                     src="@/assets/heading_preview.png"
