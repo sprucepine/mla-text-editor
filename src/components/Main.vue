@@ -58,35 +58,55 @@ onMounted(() => {
               </div>
               <template v-if="documentStore.activeDocument">
                   <UCard v-if="documentStore.activeDocument" title="Header Information">
-                      <p class="pb-4">The header in MLA format is displayed at the top right of your paper. It should include your last name and an auto-generated page number.</p>
-                      <label class="floating-label">
-                          <span class="label-text">Header Name</span>
-                          <UInput v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="w-full mb-4" />
-                      </label>
-                    </UCard>
+                    <div class="flex flex-col gap-6 md:flex-row md:items-start">
+                      <div class="min-w-0 flex-1">
+                        <p class="pb-4">The header in MLA format is displayed at the top right of your paper. It should include your last name and an auto-generated page number.</p>
+                        <label class="floating-label md:pt-1">
+                            <span class="label-text">Header Name</span>
+                            <UInput v-model="documentStore.activeDocument.headerName" type="text" placeholder="Header Name" class="w-full" />
+                        </label>
+                      </div>
+                      <figure class="flex shrink-0 flex-col items-end gap-2">
+                        <div class="overflow-hidden rounded-md border border-default bg-muted shadow-sm">
+                          <img src="@/assets/header_preview.png" alt="Example of an MLA page header" class="block h-auto w-48 max-w-full" />
+                        </div>
+                        <figcaption class="text-xs text-muted">Header preview</figcaption>
+                      </figure>
+                    </div>
+                  </UCard>
 
                   <UCard v-if="documentStore.activeDocument" title="Heading Information">
-                      <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>
+                    <p class="pb-4">The heading in MLA format is displayed on the first page of your paper.</p>
+                    <div class="flex flex-col gap-6 md:flex-row md:items-start">
+                      <div class="min-w-0 flex-1">
                         <label class="floating-label">
-                          <span class="label-text">Document Title</span>
-                          <UInput v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="w-full mb-4" />
-                      </label>
+                            <span class="label-text">Document Title</span>
+                            <UInput v-model="documentStore.activeDocument.title" type="text" placeholder="Document Title" class="mb-4 w-full" />
+                        </label>
                         <label class="floating-label">
-                          <span class="label-text">Your Name</span>
-                          <UInput v-model="documentStore.activeDocument.name" type="text" placeholder="Your Name" class="w-full mb-4" />
-                      </label>
-                      <label class="floating-label">
-                          <span class="label-text">Professor's Name</span>
-                          <UInput v-model="documentStore.activeDocument.professor" type="text" placeholder="Professor's Name" class="w-full mb-4" />
-                      </label>
-                      <label class="floating-label">
-                          <span class="label-text">Course Name</span>
-                          <UInput v-model="documentStore.activeDocument.course" type="text" placeholder="Course Name" class="w-full mb-4" />
-                      </label>
-                      <label class="floating-label">
-                          <span class="label-text">Due Date</span>
-                          <UInput v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="w-full mb-4" />
-                      </label>
+                            <span class="label-text">Your Name</span>
+                            <UInput v-model="documentStore.activeDocument.name" type="text" placeholder="Your Name" class="mb-4 w-full" />
+                        </label>
+                        <label class="floating-label">
+                            <span class="label-text">Professor's Name</span>
+                            <UInput v-model="documentStore.activeDocument.professor" type="text" placeholder="Professor's Name" class="mb-4 w-full" />
+                        </label>
+                        <label class="floating-label">
+                            <span class="label-text">Course Name</span>
+                            <UInput v-model="documentStore.activeDocument.course" type="text" placeholder="Course Name" class="mb-4 w-full" />
+                        </label>
+                        <label class="floating-label">
+                            <span class="label-text">Due Date</span>
+                            <UInput v-model="documentStore.activeDocument.dueDate" type="date" placeholder="Due Date" class="mb-4 w-full" />
+                        </label>
+                      </div>
+                      <figure class="flex shrink-0 flex-col items-end gap-2">
+                        <div class="overflow-hidden rounded-md border border-default bg-muted shadow-sm">
+                          <img src="@/assets/heading_preview.png" alt="Example of an MLA heading" class="block h-auto w-48 max-w-full" />
+                        </div>
+                        <figcaption class="text-xs text-muted">Heading preview</figcaption>
+                      </figure>
+                    </div>
                     </UCard>
                   <UCard v-for="(block, index) in documentStore.activeDocument.content" :key="index" :title="'Paragraph'" :icon="'boxicons:paragraph'">
                     <template #header>
