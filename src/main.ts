@@ -7,6 +7,7 @@ import './main.css'
 import router from './router'
 import 'iconify-icon'
 import ui from '@nuxt/ui/vue-plugin'
+import { useDocumentStore } from './stores/documentStore.ts'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -16,5 +17,8 @@ app.use(pinia)
 app.use(router)
 
 pinia.use(piniaPluginPersistedstate)
+
+const documentStore = useDocumentStore(pinia)
+await documentStore.hydrateStore()
 
 app.mount('#app')
