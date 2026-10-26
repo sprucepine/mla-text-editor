@@ -1,28 +1,28 @@
-import type { JSONContent } from "@tiptap/vue-3";
+import type { JSONContent } from '@tiptap/vue-3'
 
 export enum DocumentType {
-  body = "body",
-  heading2 = "heading2",
-  heading3 = "heading3"
+  body = 'body',
+  heading2 = 'heading2',
+  heading3 = 'heading3',
 }
 
 export interface ContentBlock {
-  type: DocumentType;
-  text: string;
-  content: JSONContent[]; // Recursive definition for nested content blocks
+  type: DocumentType
+  text: string
+  content: JSONContent[] // Recursive definition for nested content blocks
 }
 
 export interface Citation {
-  id: string;
-  name: string;
-  author?: string;
-  title?: string;
-  year?: string;
-  publisher?: string;
-  containerTitle?: string;
-  pageNumber?: string;
-  url?: string;
-  type: CitationType;
+  id: string
+  name: string
+  author?: string
+  title?: string
+  year?: string
+  publisher?: string
+  containerTitle?: string
+  pageNumber?: string
+  url?: string
+  type: CitationType
 }
 
 export enum CitationType {
@@ -30,21 +30,21 @@ export enum CitationType {
   Article = 'Article',
   Website = 'Website',
   Video = 'Video',
-  Other = 'Other'
+  Other = 'Other',
 }
 
 export interface DocumentItem {
-  id: string;
-  fileTitle: string;
-  fileIcon: string;
-  headerName: string;
-  title: string;
-  name: string;
-  professor: string;
-  course: string;
-  dueDate: string;
-  content: ContentBlock[];
-  citations: Citation[];
+  id: string
+  fileTitle: string
+  fileIcon: string
+  headerName: string
+  title: string
+  name: string
+  professor: string
+  course: string
+  dueDate: string
+  content: ContentBlock[]
+  citations: Citation[]
 }
 
 export enum SaveState {
@@ -54,4 +54,3 @@ export enum SaveState {
   OldSaved = 'oldSaved',
   Error = 'error',
 }
-

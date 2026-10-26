@@ -59,7 +59,7 @@ const schoolIcons = [
   'lucide:music',
   'lucide:clapperboard',
   'lucide:brain',
-  'lucide:calendar'
+  'lucide:calendar',
 ]
 
 function selectIcon(iconName: string) {
@@ -110,7 +110,9 @@ function saveDialog() {
   </div>
 </div>
     <h3 class="text-lg font-semibold">Change file title</h3>
-    <p class="mt-2 text-sm text-base-content/70">This title appears in the document header and app shell.</p>
+    <p class="mt-2 text-sm text-base-content/70">
+      This title appears in the document header and app shell.
+    </p>
 
     <label class="floating-label mt-4">
       <span class="label-text">File title</span>
@@ -135,7 +137,9 @@ function saveDialog() {
     </label>
 
     <div class="mt-4">
-      <span class="text-xs font-medium text-base-content/60 block mb-2">Quick Select School Icon:</span>
+      <span class="text-xs font-medium text-base-content/60 block mb-2"
+        >Quick Select School Icon:</span
+      >
       <div class="grid grid-cols-6 gap-2 p-2 bg-base-200 rounded-lg">
         <button
           v-for="icon in schoolIcons"
@@ -149,7 +153,11 @@ function saveDialog() {
         </button>
       </div>
       <p class="text-xs text-base-content/60 mt-2">
-        Looking for more icons? You can visit <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary">Iconify</a> to find more icons.
+        Looking for more icons? You can visit
+        <a href="https://icon-sets.iconify.design/" target="_blank" class="link link-primary"
+          >Iconify</a
+        >
+        to find more icons.
       </p>
     </div>
 
@@ -160,5 +168,4 @@ function saveDialog() {
   </ModalView>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

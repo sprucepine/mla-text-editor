@@ -114,7 +114,9 @@ function collectStyledTokens(node: JSONContent, inheritedStyle: InlineStyle = {}
     return [{ text: '\n', style: inheritedStyle }]
   }
 
-  const currentStyle = node.text ? mergeInlineStyles(inheritedStyle, getInlineStyleFromMarks(node)) : inheritedStyle
+  const currentStyle = node.text
+    ? mergeInlineStyles(inheritedStyle, getInlineStyleFromMarks(node))
+    : inheritedStyle
 
   if (typeof node.text === 'string') {
     return tokenizeStyledText(node.text, currentStyle)
@@ -168,8 +170,14 @@ function getFontStyle(style: InlineStyle): 'normal' | 'bold' | 'italic' | 'boldi
 }
 
 function createExportFileName(documentItem: DocumentItem, extension: 'html' | 'pdf'): string {
-  const fallbackName = documentItem.fileTitle?.trim() || documentItem.title?.trim() || 'mla-document'
-  return `${fallbackName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'mla-document'}.${extension}`
+  const fallbackName =
+    documentItem.fileTitle?.trim() || documentItem.title?.trim() || 'mla-document'
+  return `${
+    fallbackName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'mla-document'
+  }.${extension}`
 }
 
 function isMeaningfulCitation(citation: string): boolean {
@@ -179,7 +187,12 @@ function isMeaningfulCitation(citation: string): boolean {
 
 export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
   const title = documentItem.title.trim() || documentItem.fileTitle.trim() || 'Untitled Document'
-  const headingLines = [documentItem.name, documentItem.professor, documentItem.course, formatMlaDate(documentItem.dueDate)]
+  const headingLines = [
+    documentItem.name,
+    documentItem.professor,
+    documentItem.course,
+    formatMlaDate(documentItem.dueDate),
+  ]
     .map((line) => line?.trim())
     .filter(Boolean)
 
@@ -191,17 +204,21 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
     .map((citation) => buildMlaCitation(citation))
     .filter((citation): citation is string => isMeaningfulCitation(citation))
 
-  const bodyHtml = bodyParagraphs.length > 0
-    ? bodyParagraphs.map((paragraph) => `<p class="body-paragraph">${escapeHtml(paragraph)}</p>`).join('\n        ')
-    : '<p class="body-paragraph body-paragraph-empty">Start typing in the editor to build your MLA paper.</p>'
+  const bodyHtml =
+    bodyParagraphs.length > 0
+      ? bodyParagraphs
+          .map((paragraph) => `<p class="body-paragraph">${escapeHtml(paragraph)}</p>`)
+          .join('\n        ')
+      : '<p class="body-paragraph body-paragraph-empty">Start typing in the editor to build your MLA paper.</p>'
 
-  const worksCitedHtml = worksCitedEntries.length > 0
-    ? worksCitedEntries.map((citation) => `<p class="works-cited-entry">${escapeHtml(citation)}</p>`).join('\n        ')
-    : ''
+  const worksCitedHtml =
+    worksCitedEntries.length > 0
+      ? worksCitedEntries
+          .map((citation) => `<p class="works-cited-entry">${escapeHtml(citation)}</p>`)
+          .join('\n        ')
+      : ''
 
-  const headingHtml = headingLines
-    .map((line) => `<p>${escapeHtml(line)}</p>`)
-    .join('\n        ')
+  const headingHtml = headingLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('\n        ')
 
   return `<!doctype html>
 <html lang="en">
@@ -308,11 +325,15 @@ export function buildMlaDocumentExportHtml(documentItem: DocumentItem): string {
         ${bodyHtml}
       </section>
 
-      ${worksCitedEntries.length > 0 ? `
+      ${
+        worksCitedEntries.length > 0
+          ? `
       <section class="works-cited">
         <h2 class="works-cited-title">Works Cited</h2>
         ${worksCitedHtml}
-      </section>` : ''}
+      </section>`
+          : ''
+      }
     </main>
   </body>
 </html>`
@@ -394,10 +415,16 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
     }
   }
 
-  function writeParagraph(text: string, options?: { firstLineIndent?: number; hangingIndent?: number }): void {
+  function writeParagraph(
+    text: string,
+    options?: { firstLineIndent?: number; hangingIndent?: number },
+  ): void {
     const firstLineIndent = options?.firstLineIndent ?? 0
     const hangingIndent = options?.hangingIndent ?? 0
-    const wrappedLines = pdf.splitTextToSize(text, contentWidth - Math.max(firstLineIndent, hangingIndent))
+    const wrappedLines = pdf.splitTextToSize(
+      text,
+      contentWidth - Math.max(firstLineIndent, hangingIndent),
+    )
 
     for (let lineIndex = 0; lineIndex < wrappedLines.length; lineIndex += 1) {
       const indent = lineIndex === 0 ? firstLineIndent : hangingIndent
@@ -487,7 +514,10 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
     return lines
   }
 
-  function writeStyledParagraph(node: JSONContent, options?: { firstLineIndent?: number; hangingIndent?: number }): void {
+  function writeStyledParagraph(
+    node: JSONContent,
+    options?: { firstLineIndent?: number; hangingIndent?: number },
+  ): void {
     const firstLineIndent = options?.firstLineIndent ?? 0
     const hangingIndent = options?.hangingIndent ?? 0
     const tokens = collectStyledTokens(node)
@@ -498,7 +528,10 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
       return
     }
 
-    const wrappedLines = wrapStyledTokens(tokens, contentWidth - Math.max(firstLineIndent, hangingIndent))
+    const wrappedLines = wrapStyledTokens(
+      tokens,
+      contentWidth - Math.max(firstLineIndent, hangingIndent),
+    )
 
     for (let lineIndex = 0; lineIndex < wrappedLines.length; lineIndex += 1) {
       const indent = lineIndex === 0 ? firstLineIndent : hangingIndent
@@ -511,7 +544,12 @@ export function exportMlaDocumentAsPdf(documentItem: DocumentItem): void {
   pdf.setFont('times', 'normal')
   pdf.setFontSize(12)
 
-  const headingLines = [documentItem.name, documentItem.professor, documentItem.course, formatMlaDate(documentItem.dueDate)]
+  const headingLines = [
+    documentItem.name,
+    documentItem.professor,
+    documentItem.course,
+    formatMlaDate(documentItem.dueDate),
+  ]
     .map((line) => line?.trim())
     .filter(Boolean) as string[]
 
